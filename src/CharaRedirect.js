@@ -4,7 +4,7 @@ import mw from './utils/Mediawiki.js';
 (async () => {
     const api = new mw.Api({
         url: 'https://zh.moegirl.org.cn/api.php',
-        botUsername: 'Chi ZJ2', 
+        botUsername: CONFIG.USERNAME, 
         botPassword: CONFIG.PASSWORD, 
         cookie: {
             moegirlSSOUserID: CONFIG.SSO_USER_ID,
