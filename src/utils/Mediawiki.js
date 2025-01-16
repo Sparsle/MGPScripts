@@ -115,4 +115,4 @@ class Api {
 }
 const mediaWiki = { Api };
 const mw = mediaWiki;
-module.exports = { mediaWiki, mw };
+export default mw;
