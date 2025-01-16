@@ -1,4 +1,5 @@
 "use strict";
+import CONFIG from './config.js';
 
 class Api {
 	#api;
@@ -15,8 +16,8 @@ class Api {
 		url.search = "";
 		this.#api = url.href;
 		this.#init = {
-			get: { headers: { referer: url.href } },
-			post: { headers: { referer: url.href }, method: "POST" },
+			get: { headers: { referer: url.href, 'user-agent': CONFIG.USER_AGENT } },
+			post: { headers: { referer: url.href, 'user-agent': CONFIG.USER_AGENT }, method: "POST" },
 		};
 		this.#botUsername = botUsername;
 		this.#botPassword = botPassword;
