@@ -40,7 +40,7 @@ async function fetchPosts() {
 
 async function addToWiki() {
     const api = new mw.Api({
-        url: 'https://zh.moegirl.org.cn/api.php',
+        url: 'https://mzh.moegirl.org.cn/api.php',
         botUsername: 'Chi ZJ2@Bot', 
         botPassword: CONFIG.PASSWORD, 
         cookie: {
