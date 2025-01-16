@@ -1,0 +1,11 @@
+{
+  "name": "wikibot",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "test": "wikibot"
+  },
+  "author": "",
+  "license": "ISC"
+}
