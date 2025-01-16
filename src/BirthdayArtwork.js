@@ -1,5 +1,4 @@
 import CONFIG from './utils/config.js';
-console.log(CONFIG.TEST);
 import mw from './utils/Mediawiki.js';
 
 const birthdayList = [];
@@ -42,7 +41,7 @@ async function fetchPosts() {
 async function addToWiki() {
     const api = new mw.Api({
         url: 'https://zh.moegirl.org.cn/api.php',
-        botUsername: 'Chi ZJ2@Bot', 
+        botUsername: CONFIG.USERNAME, 
         botPassword: CONFIG.PASSWORD, 
         cookie: {
             moegirlSSOUserID: CONFIG.SSO_USER_ID,
