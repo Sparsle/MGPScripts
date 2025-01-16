@@ -87,6 +87,7 @@ class Api {
 	}
 	async #login(lgname, lgpassword, lgtoken) {
 		lgtoken = lgtoken ?? (await this.getToken("login"));
+		console.log('token:', lgtoken);
 		const r = await this.post({
 			action: "login",
 			lgname,
