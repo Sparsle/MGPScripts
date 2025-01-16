@@ -1,4 +1,5 @@
 import CONFIG from './utils/config.js';
+console.log(CONFIG.TEST);
 import mw from './utils/Mediawiki.js';
 
 const birthdayList = [];
