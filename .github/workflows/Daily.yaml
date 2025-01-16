@@ -13,11 +13,6 @@ on:
           - 'BirthdayArtwork'
           - 'CharaRedirect'
 
-env:
-  PASSWORD: ${{ secrets.PASSWORD }}
-  SSO_USER_ID: ${{ secrets.SSO_USER_ID }}
-  SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
-
 jobs:
   BirthdayArtwork:
     if: |
@@ -33,6 +28,10 @@ jobs:
           node-version: 20.x
           cache: 'npm'
       - name: Run Script
+        env:
+          PASSWORD: ${{ secrets.PASSWORD }}
+          SSO_USER_ID: ${{ secrets.SSO_USER_ID }}
+          SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
         run: node src/BirthdayArtwork.js
 
   CharaRedirect:
@@ -49,4 +48,8 @@ jobs:
           node-version: 20.x
           cache: 'npm'
       - name: Run Script
+        env:
+          PASSWORD: ${{ secrets.PASSWORD }}
+          SSO_USER_ID: ${{ secrets.SSO_USER_ID }}
+          SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
         run: node src/CharaRedirect.js
