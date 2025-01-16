@@ -36,17 +36,16 @@ async function fetchPosts() {
     });
 
     birthdayList.reverse();
-};
+}
 
 async function addToWiki() {
     const api = new mw.Api({
-        url: 'https://mzh.moegirl.org.cn/api.php',
+        url: 'https://zh.moegirl.org.cn/api.php',
         botUsername: 'Chi ZJ2@Bot', 
         botPassword: CONFIG.PASSWORD, 
         cookie: {
             moegirlSSOUserID: CONFIG.SSO_USER_ID,
-            moegirlSSOToken: CONFIG.SSO_TOKEN,
-            morgirlSSO_session: CONFIG.SSO_SESSION
+            moegirlSSOToken: CONFIG.SSO_TOKEN
         }
     });
 
@@ -95,7 +94,7 @@ async function addToWiki() {
     }
 
     await api.logout();
-};
+}
 
 (async () => {
     await fetchPosts();
