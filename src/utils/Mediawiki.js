@@ -16,8 +16,8 @@ class Api {
 		url.search = "";
 		this.#api = url.href;
 		this.#init = {
-			get: { headers: { referer: url.href, 'user-agent': CONFIG.USER_AGENT } },
-			post: { headers: { referer: url.href, 'user-agent': CONFIG.USER_AGENT }, method: "POST" },
+			get: { headers: { referer: url.href, 'api-user-agent': CONFIG.USER_AGENT } },
+			post: { headers: { referer: url.href, 'api-user-agent': CONFIG.USER_AGENT }, method: "POST" },
 		};
 		this.#botUsername = botUsername;
 		this.#botPassword = botPassword;
