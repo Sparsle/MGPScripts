@@ -45,7 +45,8 @@ async function addToWiki() {
         botPassword: CONFIG.PASSWORD, 
         cookie: {
             moegirlSSOUserID: CONFIG.SSO_USER_ID,
-            moegirlSSOToken: CONFIG.SSO_TOKEN
+            moegirlSSOToken: CONFIG.SSO_TOKEN,
+            morgirlSSO_session: CONFIG.SSO_SESSION
         }
     });
 
