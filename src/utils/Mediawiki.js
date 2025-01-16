@@ -16,8 +16,8 @@ class Api {
 		url.search = "";
 		this.#api = url.href;
 		this.#init = {
-			get: { headers: { referer: url.href, 'user-agent': CONFIG.USER_AGENT } },
-			post: { headers: { referer: url.href, 'user-agent': CONFIG.USER_AGENT }, method: "POST" },
+			get: { headers: { referer: url.href, 'user-agent': CONFIG.USER_AGENT, 'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6,zh-TW;q=0.5' } },
+			post: { headers: { referer: url.href, 'user-agent': CONFIG.USER_AGENT, 'accept-language': 'zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6,zh-TW;q=0.5' }, method: "POST" },
 		};
 		this.#botUsername = botUsername;
 		this.#botPassword = botPassword;
@@ -87,7 +87,6 @@ class Api {
 	}
 	async #login(lgname, lgpassword, lgtoken) {
 		lgtoken = lgtoken ?? (await this.getToken("login"));
-		console.log('token:', lgtoken);
 		const r = await this.post({
 			action: "login",
 			lgname,
