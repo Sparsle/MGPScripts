@@ -1,5 +1,5 @@
-const { CONFIG } = require('../utils/config.js');
-const { mw } = require('../utils/MediaWiki.js');
+const { CONFIG } = require('./utils/config.js');
+const { mw } = require('./utils/MediaWiki.js');
 
 const birthdayList = [];
 const today = new Date();
