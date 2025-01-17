@@ -70,7 +70,7 @@ async function addToWiki() {
 
         birthdayList.forEach(([name, snippet]) => {
             if(redirects[name] !== undefined) {
-                snippet = snippet.replace(`[[${name}]]`, `[[${redirects[name]}]]`);
+                snippet = snippet.replace(`[[${name}]]`, `[[${redirects[name]}|${name}]]`);
             }
 
             code = code.replace(snippet + '\n', '');
