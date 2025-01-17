@@ -3,7 +3,7 @@ run-name: Executing Daily Updation Jobs
 
 on:
   schedule:
-    - cron: '30 16 * * *' # 00:30 CST
+    - cron: '5 4 * * *' # 12:05 CST
   workflow_dispatch:
     inputs:
       task:
@@ -16,7 +16,7 @@ on:
 jobs:
   BirthdayArtwork:
     if: |
-      github.event.schedule == '30 16 * * *' || 
+      github.event.schedule == '5 4 * * *' || 
       github.event.inputs.task == 'BirthdayArtwork'
     runs-on: ubuntu-latest
     steps:
@@ -36,7 +36,7 @@ jobs:
 
   CharaRedirect:
     if: |
-      github.event.schedule == '30 16 * * *' || 
+      github.event.schedule == '5 4 * * *' || 
       github.event.inputs.task == 'CharaRedirect'
     runs-on: ubuntu-latest
     steps:
