@@ -29,7 +29,7 @@ import mw from './utils/Mediawiki.js';
         let linkMatch = code.match(/bt[^{]+?{{原神\/角色.+?原名=\[\[.+?\]\]/gs);
         linkMatch.forEach((snippet) => {
             let name = snippet.match(/bt\d+\s*=\s*(.+?)\n/)[1],
-                link = snippet.match(/原名\s*=\s*\[\[(.+?)\]\]/)[1];
+                link = snippet.match(/原名\s*=\s*\[\[(.*?)(?:\|.*)?\]\]/)[1];
 
             if(name != link) {
                 json[name] = link;
