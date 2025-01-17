@@ -1,5 +1,5 @@
 import CONFIG from './utils/config.js';
-import mw from './utils/Mediawiki.js';
+import mw from './utils/mediawiki.js';
 
 const birthdayList = [];
 const today = new Date();
