@@ -1,7 +1,7 @@
-// From https://github.com/gui-ying233/my-bot/blob/master/mediaWiki.js
 "use strict";
 import CONFIG from './config.js';
 
+// Author: gui-ying233
 class Api {
 	#api;
 	#botUsername;
