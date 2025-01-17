@@ -2,39 +2,53 @@ name: Daily
 
 on:
   schedule:
-  - cron: '*/5 * * * *'
+    - cron: '5 4 * * *' # 12:05 CST
+  workflow_dispatch:
+    inputs:
+      task:
+        type: choice
+        required: true
+        options:
+          - 'BirthdayArtwork'
+          - 'CharaRedirect'
 
 jobs:
   BirthdayArtwork:
+    if: |
+      github.event_name == 'schedule' || 
+      github.event.inputs.task == 'BirthdayArtwork'
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Setup Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22.x
-        cache: 'npm'
-    - name: Run Script
-      env:
-        PASSWORD: ${{ secrets.PASSWORD }}
-        SSO_USER_ID: ${{ secrets.SSO_USER_ID }}
-        SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
-      run: node src/BirthdayArtwork.js
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+      - name: Run Script
+        env:
+          PASSWORD: ${{ secrets.PASSWORD }}
+          SSO_USER_ID: ${{ secrets.SSO_USER_ID }}
+          SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
+        run: node src/BirthdayArtwork.js
 
   CharaRedirect:
+    if: |
+      github.event_name == 'schedule' || 
+      github.event.inputs.task == 'CharaRedirect'
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    - name: Setup Node
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22.x
-        cache: 'npm'
-    - name: Run Script
-      env:
-        PASSWORD: ${{ secrets.PASSWORD }}
-        SSO_USER_ID: ${{ secrets.SSO_USER_ID }}
-        SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
-      run: node src/CharaRedirect.js
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+      - name: Run Script
+        env:
+          PASSWORD: ${{ secrets.PASSWORD }}
+          SSO_USER_ID: ${{ secrets.SSO_USER_ID }}
+          SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
+        run: node src/CharaRedirect.js
