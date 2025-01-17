@@ -1,9 +1,8 @@
 name: Daily
-run-name: Executing Daily Updation Jobs
 
 on:
   schedule:
-    - cron: '15 4 * * *' # 12:05 CST
+    - cron: '30 4 * * *' # 12:05 CST
   workflow_dispatch:
     inputs:
       task:
@@ -14,9 +13,9 @@ on:
           - 'CharaRedirect'
 
 jobs:
-  BirthdayArtwork:
+  birthday_artwork:
     if: |
-      github.event.schedule == '15 4 * * *' || 
+      github.event.schedule == '30 4 * * *' || 
       github.event.inputs.task == 'BirthdayArtwork'
     runs-on: ubuntu-latest
     steps:
@@ -34,9 +33,9 @@ jobs:
           SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
         run: node src/BirthdayArtwork.js
 
-  CharaRedirect:
+  chara_redirect:
     if: |
-      github.event.schedule == '15 4 * * *' || 
+      github.event.schedule == '30 4 * * *' || 
       github.event.inputs.task == 'CharaRedirect'
     runs-on: ubuntu-latest
     steps:
