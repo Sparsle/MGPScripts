@@ -1,40 +1,40 @@
-name: "Daily"
+name: Daily
 
 on:
   schedule:
-    - cron: "50 4 * * *"
+  - cron: '*/5 * * * *'
 
 jobs:
   BirthdayArtwork:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-          cache: 'npm'
-      - name: Run Script
-        env:
-          PASSWORD: ${{ secrets.PASSWORD }}
-          SSO_USER_ID: ${{ secrets.SSO_USER_ID }}
-          SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
-        run: node src/BirthdayArtwork.js
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22.x
+        cache: 'npm'
+    - name: Run Script
+      env:
+        PASSWORD: ${{ secrets.PASSWORD }}
+        SSO_USER_ID: ${{ secrets.SSO_USER_ID }}
+        SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
+      run: node src/BirthdayArtwork.js
 
   CharaRedirect:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-          cache: 'npm'
-      - name: Run Script
-        env:
-          PASSWORD: ${{ secrets.PASSWORD }}
-          SSO_USER_ID: ${{ secrets.SSO_USER_ID }}
-          SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
-        run: node src/CharaRedirect.js
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22.x
+        cache: 'npm'
+    - name: Run Script
+      env:
+        PASSWORD: ${{ secrets.PASSWORD }}
+        SSO_USER_ID: ${{ secrets.SSO_USER_ID }}
+        SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
+      run: node src/CharaRedirect.js
