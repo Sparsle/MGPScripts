@@ -2,21 +2,10 @@ name: Daily
 
 on:
   schedule:
-    - cron: '38 4 * * *' # 12:05 CST
-  workflow_dispatch:
-    inputs:
-      task:
-        type: choice
-        required: true
-        options:
-          - 'BirthdayArtwork'
-          - 'CharaRedirect'
+    - cron: '47 4 * * *' # 12:05 CST
 
 jobs:
-  birthday_artwork:
-    if: |
-      github.event_name == 'schedule' ||
-      github.event.inputs.task == 'BirthdayArtwork'
+  BirthdayArtwork:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,10 +22,7 @@ jobs:
           SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
         run: node src/BirthdayArtwork.js
 
-  chara_redirect:
-    if: |
-      github.event_name == 'schedule' ||
-      github.event.inputs.task == 'CharaRedirect'
+  CharaRedirect:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
