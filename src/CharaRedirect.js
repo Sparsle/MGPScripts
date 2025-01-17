@@ -15,36 +15,32 @@ await api.login();
 
 const json = {};
 
-try {
-    let response = await api.post({
-        action: 'query',
-        prop: 'revisions',
-        titles: `原神`,
-        rvsection: 13,
-        rvprop: 'content'
-    });
-    let code = response.query.pages[0].revisions[0].content;
+let response = await api.post({
+    action: 'query',
+    prop: 'revisions',
+    titles: `原神`,
+    rvsection: 13,
+    rvprop: 'content'
+});
+let code = response.query.pages[0].revisions[0].content;
 
-    let linkMatch = code.match(/bt[^{]+?{{原神\/角色.+?原名=\[\[.+?\]\]/gs);
-    linkMatch.forEach((snippet) => {
-        let name = snippet.match(/bt\d+\s*=\s*(.+?)\n/)[1],
-            link = snippet.match(/原名\s*=\s*\[\[(.*?)(?:\|.*)?\]\]/)[1];
+let linkMatch = code.match(/bt[^{]+?{{原神\/角色.+?原名=\[\[.+?\]\]/gs);
+linkMatch.forEach((snippet) => {
+    let name = snippet.match(/bt\d+\s*=\s*(.+?)\n/)[1],
+        link = snippet.match(/原名\s*=\s*\[\[(.*?)(?:\|.*)?\]\]/)[1];
 
-        if(name != link) {
-            json[name] = link;
-        }
-    });
+    if(name != link) {
+        json[name] = link;
+    }
+});
 
-    response = await api.post({
-        action: 'edit',
-        title: 'User:Chi ZJ2/Data',
-        text: JSON.stringify(json),
-        bot: true,
-        tags: 'Bot',
-        token: await api.getToken('csrf', true)
-    });
-} catch (err) {
-    console.error(err);
-}
+response = await api.post({
+    action: 'edit',
+    title: 'User:Chi ZJ2/Data',
+    text: JSON.stringify(json),
+    bot: true,
+    tags: 'Bot',
+    token: await api.getToken('csrf', true)
+});
 
 await api.logout();
