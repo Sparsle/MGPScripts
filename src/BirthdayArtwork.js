@@ -36,7 +36,7 @@ async function fetchPosts() {
         let postId = postItem.post.post_id;
         let date = dateFormat(new Date(parseInt(postItem.post.created_at) * 1000));
         if(dateFormat(today) != date) {
-            //return;
+            return;
         }
 
         let titleMatch = title.match(/(.+)生日快乐｜(.+)/);
