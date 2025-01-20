@@ -2,10 +2,10 @@ import { env } from 'process';
 
 const CONFIG = {
     USER_AGENT: env.USER_AGENT,
-    USERNAME: 'Chi_ZJ2@Bot',
+    ZH_API: env.ZH_API,
+    USERNAME: env.USERNAME,
     PASSWORD: env.PASSWORD,
-    SSO_USER_ID: env.SSO_USER_ID,
-    SSO_TOKEN: env.SSO_TOKEN,
+    COOKIE: eval(env.COOKIE)(),
 };
 
 export default CONFIG;
