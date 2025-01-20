@@ -60,6 +60,7 @@ jobs:
         run: |
           git config --global user.name Sparsle
           git config --global user.email ${{ secrets.EMAIL }}
+          mv data.json src/
           git add src/data.json
           git commit -m "Update data.json automatically"
           git push
