@@ -1,25 +1,17 @@
 import CONFIG from './utils/config.js';
 import mw from './utils/mediawiki.js';
+import getData from './GetData.js';
+
 const api = new mw.Api({
-    url: 'https://zh.moegirl.org.cn/api.php',
+    url: CONFIG.ZH_API,
     botUsername: CONFIG.USERNAME, 
     botPassword: CONFIG.PASSWORD, 
-    cookie: {
-        moegirlSSOUserID: CONFIG.SSO_USER_ID,
-        moegirlSSOToken: CONFIG.SSO_TOKEN
-    }
+    cookie: CONFIG.COOKIE
 });
 
 await api.login();
 
-let response = await api.post({
-    action: 'query',
-    prop: 'revisions',
-    titles: `User:Chi_ZJ2/Data`,
-    rvprop: 'content'
-});
-
-const redirects = JSON.parse(response.query.pages[0].revisions[0].content),
+const redirects = await getData('chara_redirects'),
     birthdayList = [],
     today = new Date();
 
@@ -91,12 +83,11 @@ async function addToListPage() {
         action: 'edit',
         title: '原神/贺图',
         text: code,
-        summary: '自动更新角色生日贺图',
+        summary: '自动添加角色生日贺图代码',
         bot: true,
         tags: 'Bot',
         token: await api.getToken('csrf', true)
     }).then(console.log);
-
 }
 
 async function addToCharaPage() {
@@ -109,13 +100,13 @@ async function addToCharaPage() {
         });
         let code = response.query.pages[0].revisions[0].content;
 
-        let start = code.search(/==== *生日 *====\s*\n/),
-            sliceToStart = code.slice(start);
-        let end = start + sliceToStart.search(/\n(?:===* *.+? *===*\s*\n|{{原神\|角色}})/);
+        let start = code.search(/==== *生日 *==== *\n/);
+        let sliceToStart = code.slice(start);
+        let end = start + sliceToStart.search(/\n(?:===* *.+? *===* *\n|{{原神\|角色}})/);
 
-        if(sliceToStart.search(description) != -1) {
+        if(sliceToStart.indexOf(description) != -1) {
             continue;
-        } else if(sliceToStart.search(`;${today.getFullYear()}年`) == -1) {
+        } else if(sliceToStart.indexOf(`;${today.getFullYear()}年`) == -1) {
             snippet = `\n;${today.getFullYear()}年` + snippet;
         }
         code = code.slice(0, end) + snippet + code.slice(end);
@@ -124,7 +115,7 @@ async function addToCharaPage() {
             action: 'edit',
             title: redirects[name] ?? name,
             text: code,
-            summary: '自动更新角色生日贺图',
+            summary: '自动添加角色生日贺图代码',
             bot: true,
             tags: 'Bot',
             token: await api.getToken('csrf', true)
