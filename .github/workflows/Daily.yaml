@@ -56,3 +56,10 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
           COOKIE: ${{ secrets.COOKIE }}
         run: node src/UpdateData.js
+      - name: Commit and Push
+        run: |
+          git config --global user.name Sparsle
+          git config --global user.email ${{ secrets.EMAIL }}
+          git add -A
+          git commit -m "update data.json"
+          git push
