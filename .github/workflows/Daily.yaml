@@ -10,7 +10,7 @@ on:
         required: true
         options:
           - 'BirthdayArtwork'
-          - 'CharaRedirect'
+          - 'UpdateData'
 
 jobs:
   BirthdayArtwork:
@@ -28,15 +28,17 @@ jobs:
           cache: 'npm'
       - name: Run Script
         env:
+          USER_AGENT: ${{ secrets.USER_AGENT }}
+          ZH_API: ${{ secrets.ZH_API }}
+          USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
-          SSO_USER_ID: ${{ secrets.SSO_USER_ID }}
-          SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
+          COOKIE: ${{ secrets.COOKIE }}
         run: node src/BirthdayArtwork.js
 
-  CharaRedirect:
+  UpdateData:
     if: |
       github.event_name == 'schedule' || 
-      github.event.inputs.task == 'CharaRedirect'
+      github.event.inputs.task == 'UpdateData'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -48,7 +50,9 @@ jobs:
           cache: 'npm'
       - name: Run Script
         env:
+          USER_AGENT: ${{ secrets.USER_AGENT }}
+          ZH_API: ${{ secrets.ZH_API }}
+          USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
-          SSO_USER_ID: ${{ secrets.SSO_USER_ID }}
-          SSO_TOKEN: ${{ secrets.SSO_TOKEN }}
-        run: node src/CharaRedirect.js
+          COOKIE: ${{ secrets.COOKIE }}
+        run: node src/UpdateData.js
