@@ -33,6 +33,7 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
           COOKIE: ${{ secrets.COOKIE }}
+          SUMMARY: ${{ secrets.SUMMARY }}
         run: node src/BirthdayArtwork.js
 
   UpdateData:
