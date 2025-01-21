@@ -6,6 +6,7 @@ const CONFIG = {
     USERNAME: env.USERNAME,
     PASSWORD: env.PASSWORD,
     COOKIE: eval(env.COOKIE)(),
+    SUMMARY: eval(env.SUMMARY),
 };
 
 export default CONFIG;
