@@ -83,7 +83,7 @@ async function addToListPage() {
         action: 'edit',
         title: '原神/贺图',
         text: code,
-        summary: '自动添加角色生日贺图代码',
+        summary: CONFIG.SUMMARY('自动添加角色生日贺图代码'),
         bot: true,
         tags: 'Bot',
         token: await api.getToken('csrf', true)
@@ -115,7 +115,7 @@ async function addToCharaPage() {
             action: 'edit',
             title: redirects[name] ?? name,
             text: code,
-            summary: '自动添加角色生日贺图代码',
+            summary: CONFIG.SUMMARY('自动添加角色生日贺图代码'),
             bot: true,
             tags: 'Bot',
             token: await api.getToken('csrf', true)
