@@ -34,7 +34,8 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
           COOKIE: ${{ secrets.COOKIE }}
           SUMMARY: ${{ secrets.SUMMARY }}
-        run: node src/BirthdayArtwork.js
+        working-directory: ./src
+        run: node BirthdayArtwork.js
 
   UpdateData:
     if: |
@@ -56,12 +57,12 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
           COOKIE: ${{ secrets.COOKIE }}
-        run: node src/UpdateData.js
+        working-directory: ./src
+        run: node UpdateData.js
       - name: Commit and Push
         run: |
           git config --global user.name Sparsle
           git config --global user.email ${{ secrets.EMAIL }}
-          mv data.json src/
-          git add src/data.json
+          git add data.json
           git commit -m "Update data.json automatically"
           git push
