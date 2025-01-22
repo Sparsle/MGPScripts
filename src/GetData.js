@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 function getData(dataName) {
-    let ret = JSON.parse(fs.readFileSync('./data.json'))[dataName];
+    let ret = JSON.parse(fs.readFileSync('./data.json', 'utf8'))[dataName];
     if(ret !== undefined) {
         return ret;
     } else {
