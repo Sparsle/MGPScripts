@@ -486,7 +486,7 @@ function match(text, index, start, end) {
 }
 
 (async () => {
-    const FLAG_TESTING = true;
+    const FLAG_TESTING = true && !CONFIG.PRODUCTION;
     const FLAG_PRODUCTION = CONFIG.PRODUCTION;
 
     /**
