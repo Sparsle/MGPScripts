@@ -10,7 +10,6 @@ on:
         required: true
         options:
           - 'BirthdayArtwork'
-          - 'CharaInformation'
           - 'UpdateData'
 
 jobs:
@@ -30,13 +29,10 @@ jobs:
       - name: Run Script
         env:
           CONFIG: ${{ secrets.CONFIG }}
-        working-directory: ./src
         run: node BirthdayArtwork.js
 
   CharaInformation:
-    if: |
-      github.event_name == '5 4 7,14,21,28 * *' || 
-      github.event.inputs.task == 'CharaInformation'
+    if: github.event_name == '5 4 7,14,21,28 * *'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -49,7 +45,6 @@ jobs:
       - name: Run Script
         env:
           CONFIG: ${{ secrets.CONFIG }}
-        working-directory: ./src
         run: node CharaInformation.js
 
   UpdateData:
@@ -68,7 +63,6 @@ jobs:
       - name: Run Script
         env:
           CONFIG: ${{ secrets.CONFIG }}
-        working-directory: ./src
         run: node UpdateData.js
       - name: Commit and Push
         run: |
