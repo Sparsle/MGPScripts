@@ -11,9 +11,9 @@ const api = new mw.Api({
 
 const dataTable = {
     chara_list: async () => {
-        let response = await fetch('https://gi.yatta.moe/api/v2/chs/avatar');
-        let json = await response.json();
-        let today = new Date().getTime();
+        const response = await fetch('https://gi.yatta.moe/api/v2/chs/avatar');
+        const json = await response.json();
+        const today = new Date().getTime();
 
         return Object.fromEntries(
             Object.entries(json.data.items)
@@ -23,20 +23,20 @@ const dataTable = {
     }, 
 
     chara_redirects: async () => {
-        let response = await api.post({
+        const response = await api.post({
             action: 'query',
             prop: 'revisions',
             titles: `原神`,
             rvsection: 13,
             rvprop: 'content'
         });
-        let code = response.query.pages[0].revisions[0].content;
-        let redirects = {};
+        const code = response.query.pages[0].revisions[0].content;
+        const redirects = {};
 
-        let linkMatch = code.match(/bt[^{]+?{{原神\/角色.+?原名=\[\[.+?\]\]/gs);
+        const linkMatch = code.match(/bt[^{]+?{{原神\/角色.+?原名=\[\[.+?\]\]/gs);
         for(let snippet of linkMatch) {
-            let name = snippet.match(/bt\d+\s*=\s*(.+?)\n/)[1],
-                link = snippet.match(/原名\s*=\s*\[\[(.*?)(?:\|.*)?\]\]/)[1];
+            const name = snippet.match(/bt\d+\s*=\s*(.+?)\n/)[1];
+            const link = snippet.match(/原名\s*=\s*\[\[(.*?)(?:\|.*)?\]\]/)[1];
             if(name != link) {
                 redirects[name] = link;
             }
@@ -51,7 +51,7 @@ const dataTable = {
 
     let mergedData = {};
     for(let dataName in dataTable) {
-        mergedData[dataName] = await dataTable[dataName].call(null);
+        mergedData[dataName] = await dataTable[dataName]();
     }
 
     fs.writeFileSync('./data.json', JSON.stringify(mergedData));
