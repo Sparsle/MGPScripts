@@ -9,11 +9,9 @@ const api = new mw.Api({
     cookie: CONFIG.COOKIE
 });
 
-await api.login();
-
-const redirects = await getData('chara_redirects'),
-    birthdayList = [],
-    today = new Date();
+const redirects = await getData('chara_redirects');
+const birthdayList = [];
+const today = new Date();
 
 async function fetchPosts() {
     const response = await fetch('https://bbs-api.miyoushe.com/post/wapi/userPost?size=20&uid=75276539');
@@ -24,9 +22,9 @@ async function fetchPosts() {
     };
 
     json.data.list.forEach((postItem) => {
-        let title = postItem.post.subject;
-        let postId = postItem.post.post_id;
-        let date = dateFormat(new Date(parseInt(postItem.post.created_at) * 1000));
+        const title = postItem.post.subject;
+        const postId = postItem.post.post_id;
+        const date = dateFormat(new Date(parseInt(postItem.post.created_at) * 1000));
         if(dateFormat(today) != date) {
             return;
         }
@@ -126,7 +124,12 @@ async function addToCharaPage() {
 }
 
 await fetchPosts();
-await addToListPage();
-await addToCharaPage();
 
-await api.logout();
+if(birthdayList.length > 0) {
+    await api.login();
+
+    await addToListPage();
+    await addToCharaPage();
+
+    await api.logout();
+}
