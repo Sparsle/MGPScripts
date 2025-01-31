@@ -1,5 +1,6 @@
 import CONFIG from './utils/config.js';
 import mw from './utils/mediawiki.js';
+import { writeData } from './utils/data.js';
 import fs from 'fs';
 
 const api = new mw.Api({
@@ -54,7 +55,7 @@ const dataTable = {
         mergedData[dataName] = await dataTable[dataName]();
     }
 
-    fs.writeFileSync('./data.json', JSON.stringify(mergedData));
+    writeData(JSON.stringify(mergedData));
 
     await api.logout();
 })();
