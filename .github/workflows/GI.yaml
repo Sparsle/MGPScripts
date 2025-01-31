@@ -29,12 +29,7 @@ jobs:
           cache: 'npm'
       - name: Run Script
         env:
-          USER_AGENT: ${{ secrets.USER_AGENT }}
-          ZH_API: ${{ secrets.ZH_API }}
-          USERNAME: ${{ secrets.USERNAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          COOKIE: ${{ secrets.COOKIE }}
-          SUMMARY: ${{ secrets.SUMMARY }}
+          CONFIG: ${{ secrets.CONFIG }}
         working-directory: ./src
         run: node BirthdayArtwork.js
 
@@ -53,12 +48,7 @@ jobs:
           cache: 'npm'
       - name: Run Script
         env:
-          USER_AGENT: ${{ secrets.USER_AGENT }}
-          ZH_API: ${{ secrets.ZH_API }}
-          USERNAME: ${{ secrets.USERNAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          COOKIE: ${{ secrets.COOKIE }}
-          SUMMARY: ${{ secrets.SUMMARY }}
+          CONFIG: ${{ secrets.CONFIG }}
         working-directory: ./src
         run: node CharaInformation.js
 
@@ -77,11 +67,7 @@ jobs:
           cache: 'npm'
       - name: Run Script
         env:
-          USER_AGENT: ${{ secrets.USER_AGENT }}
-          ZH_API: ${{ secrets.ZH_API }}
-          USERNAME: ${{ secrets.USERNAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          COOKIE: ${{ secrets.COOKIE }}
+          CONFIG: ${{ secrets.CONFIG }}
         working-directory: ./src
         run: node UpdateData.js
       - name: Commit and Push
