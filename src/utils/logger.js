@@ -41,8 +41,7 @@ const logger = winston.createLogger({
 });
 
 const LOGGER = {};
-for(let level of Object.keys(loggerColors)) {
-    level = level.toLowerCase();
+for(let level of Object.keys(loggerLevels)) {
     LOGGER[level] = (message, {noRepeat = false} = {}) => {
         if(noRepeat) {
             if(loggedContent.includes(level + message)) {
