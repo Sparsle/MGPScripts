@@ -49,7 +49,7 @@ jobs:
 
   UpdateData:
     if: |
-      github.event.schedule == '35 16 * * *' || 
+      github.event_name == 'schedule' || 
       github.event.inputs.task == 'UpdateData'
     runs-on: ubuntu-latest
     steps:
