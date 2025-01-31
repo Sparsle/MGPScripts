@@ -68,10 +68,10 @@ jobs:
         run: |
           git config --global user.name Sparsle
           git config --global user.email ${{ secrets.EMAIL }}
-          git add src/data.json
+          git add data/GI.json
           if git diff-index --quiet HEAD; then
             echo "No change."
           else
-            git commit -m "Update data.json automatically"
+            git commit -m "Update GI.json automatically"
             git push
           fi
