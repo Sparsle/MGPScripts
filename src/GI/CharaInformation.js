@@ -64,18 +64,27 @@ let STRUCTURE = [
              */
             for(let skill of data.Skills) {
                 let items = {},
+                    names = [],
                     longestName = '';
                 for(let promote of Object.values(skill.Promote)) {
-                    for(let desc of promote.Desc) {
-                        if(desc == '') {
+                    if(names.length == 0) {
+                        for(let i in promote.Desc) {
+                            if(promote.Desc[i] == '') {
+                                break;
+                            }
+                            names.push(promote.Desc[i].match(/(.+)\|.+/)[1]);
+                        }
+                    }
+                    for(let i in promote.Desc) {
+                        if(promote.Desc[i] == '') {
                             break;
                         }
-                        let [_, name, value] = putParamIntoDesc(desc, promote.Param).match(/(.+)\|(.+)/);
-                        if(items[name] === undefined) {
-                            items[name] = [value];
-                            longestName = longestName.length < name.length ? name : longestName;
+                        let value = putParamIntoDesc(promote.Desc[i].match(/.+\|(.+)/)[1], promote.Param);
+                        if(items[i] === undefined) {
+                            items[i] = [value];
+                            longestName = longestName.length < names[i].length ? names[i] : longestName;
                         } else {
-                            items[name].push(value);
+                            items[i].push(value);
                         }
                     }
                 }
@@ -88,7 +97,7 @@ let STRUCTURE = [
                                  + `!style="position:sticky;left:0;background:#f8f9fa;min-width:${columnWidth}em"| 详细属性\n`
                                  + `!　!!Lv.1!!　!!Lv.2!!　!!Lv.3!!　!!Lv.4!!　!!Lv.5!!　!!Lv.6!!　!!Lv.7!!　!!Lv.8!!　!!Lv.9!!　!!Lv.10!!　!!{{color|blue|Lv.11}}!!　!!{{color|blue|Lv.12}}!!　!!{{color|blue|Lv.13}}!!　!!{{color|grey|Lv.14}}!!　!!{{color|grey|Lv.15}}\n`
                                  + ``;
-                Object.entries(items).forEach(([name, values]) => {
+                Object.entries(items).forEach(([nameIndex, values]) => {
                     let valuesReduced = '';
                     if(values[0] == values[1]) {
                         valuesReduced = `style="position:sticky;left:${columnWidth + 1.3}em"| ${values[0]}`;
@@ -96,7 +105,8 @@ let STRUCTURE = [
                         valuesReduced = values.join('||||');
                     }
                     promoteTable += `|-\n`
-                                  + `|style="position:sticky;left:0;background:#f8f9fa"| ${name}\n`
+                                  + `|style="position:sticky;left:0;background:#f8f9fa"| ${names[nameIndex]}\n`
+                                  //+ `| ${valuesReduced}\n`
                                   + `|||${valuesReduced}\n`
                                   + ``;
                 });
@@ -476,7 +486,7 @@ function match(text, index, start, end) {
 }
 
 (async () => {
-    const FLAG_TESTING = false;
+    const FLAG_TESTING = true;
     const FLAG_PRODUCTION = CONFIG.PRODUCTION;
 
     /**
@@ -508,6 +518,7 @@ function match(text, index, start, end) {
         );
     } else {
         queue = [
+            '纳西妲'
             //'琴', '安柏', '丽莎', '凯亚', '芭芭拉', '迪卢克', '雷泽', '温迪', '可莉', '班尼特', '诺艾尔', '菲谢尔', '砂糖', '莫娜', '迪奥娜', '阿贝多', '罗莎莉亚', '优菈', '米卡'
             //'魈', '北斗', '凝光', '香菱', '行秋', '重云', '刻晴', '七七', '钟离', '辛焱', '甘雨', '胡桃', '烟绯', '云堇', '申鹤', '夜兰', '瑶瑶', '白术', '闲云', '嘉明', '蓝砚'
         ].map((name) => [name, charaList[name]]);
