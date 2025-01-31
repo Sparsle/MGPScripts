@@ -1,4 +1,4 @@
-name: Daily
+name: GI
 
 on:
   schedule:
@@ -10,6 +10,7 @@ on:
         required: true
         options:
           - 'BirthdayArtwork'
+          - 'CharaInformation'
           - 'UpdateData'
 
 jobs:
@@ -37,9 +38,33 @@ jobs:
         working-directory: ./src
         run: node BirthdayArtwork.js
 
+  CharaInformation:
+    if: |
+      github.event_name == '5 4 7,14,21,28 * *' || 
+      github.event.inputs.task == 'CharaInformation'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+      - name: Run Script
+        env:
+          USER_AGENT: ${{ secrets.USER_AGENT }}
+          ZH_API: ${{ secrets.ZH_API }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          COOKIE: ${{ secrets.COOKIE }}
+          SUMMARY: ${{ secrets.SUMMARY }}
+        working-directory: ./src
+        run: node CharaInformation.js
+
   UpdateData:
     if: |
-      github.event_name == 'schedule' || 
+      github.event.schedule == '35 16 * * *' || 
       github.event.inputs.task == 'UpdateData'
     runs-on: ubuntu-latest
     steps:
