@@ -1,6 +1,6 @@
-import CONFIG from './utils/config.js';
-import mw from './utils/mediawiki.js';
-import { readData } from './utils/data.js';
+import CONFIG from '../utils/config.js';
+import mw from '../utils/mediawiki.js';
+import { readData } from '../utils/data.js';
 
 const api = new mw.Api({
     url: CONFIG.ZH_API,
@@ -9,7 +9,7 @@ const api = new mw.Api({
     cookie: CONFIG.COOKIE
 });
 
-const redirects = await readData('chara_redirects');
+const redirects = readData('GI', 'chara_redirects');
 const birthdayList = [];
 const today = new Date();
 
