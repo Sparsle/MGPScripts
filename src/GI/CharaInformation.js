@@ -486,7 +486,7 @@ function match(text, index, start, end) {
 }
 
 (async () => {
-    const FLAG_TESTING = true && !CONFIG.PRODUCTION;
+    const FLAG_TESTING = false && !CONFIG.PRODUCTION;
     const FLAG_PRODUCTION = CONFIG.PRODUCTION;
 
     /**
@@ -665,6 +665,7 @@ function match(text, index, start, end) {
             //break;
 
             if(code == rawCode) {
+                LOGGER.info('条目没有变化。\n');
                 continue;
             }
 
@@ -677,7 +678,7 @@ function match(text, index, start, end) {
                 bot: true,
                 tags: 'Bot',
                 token: await api.getToken('csrf', true)
-            }).then(console.log);
+            }).then((res) => LOGGER.info(JSON.stringify(res)));
 
             const interval = 300;
             if(!FLAG_PRODUCTION) {
