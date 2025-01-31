@@ -4,18 +4,19 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const filePath = path.join(__dirname, './data.json');
 
-function readData(dataName) {
-    const ret = JSON.parse(fs.readFileSync(filePath, 'utf8'))[dataName];
+function readData(dataName, itemName) {
+    const filePath = path.join(__dirname, `../../data/${dataName}.json`);
+    const ret = JSON.parse(fs.readFileSync(filePath, 'utf8'))[itemName];
     if(ret !== undefined) {
         return ret;
     } else {
-        throw new ReferenceError(`Data ${dataName} does not exist.`);
+        throw new ReferenceError(`Data ${itemName} does not exist.`);
     }
 }
 
-function writeData(data) {
+function writeData(dataName, data) {
+    const filePath = path.join(__dirname, `../../data/${dataName}.json`);
     fs.writeFileSync(filePath, data);
 }
 
