@@ -28,7 +28,7 @@ let STRUCTURE = [
         render: async (segment, data) => {
             if(hasSpecialContent(segment)) {
                 LOGGER.warn(
-                    `天赋检测到额外内容。`, 
+                    `天赋检测到额外内容。\n`, 
                     { noRepeat: true }
                 );
             }
@@ -518,14 +518,14 @@ function match(text, index, start, end) {
         );
     } else {
         queue = [
-            '纳西妲'
+            '达达利亚', '阿蕾奇诺', '埃洛伊'
             //'琴', '安柏', '丽莎', '凯亚', '芭芭拉', '迪卢克', '雷泽', '温迪', '可莉', '班尼特', '诺艾尔', '菲谢尔', '砂糖', '莫娜', '迪奥娜', '阿贝多', '罗莎莉亚', '优菈', '米卡'
             //'魈', '北斗', '凝光', '香菱', '行秋', '重云', '刻晴', '七七', '钟离', '辛焱', '甘雨', '胡桃', '烟绯', '云堇', '申鹤', '夜兰', '瑶瑶', '白术', '闲云', '嘉明', '蓝砚'
         ].map((name) => [name, charaList[name]]);
     }
 
     for(let [name, id] of queue) {
-        LOGGER.info(`正在编辑 ${name} 条目。\n`);
+        LOGGER.info(`正在编辑 ${Colors.white(name)} 条目。\n`);
 
         /**
          * 获取页面源码
@@ -634,18 +634,19 @@ function match(text, index, start, end) {
         for(let i = 0; i < sectionHeadings.length; i++) {
             const heading = sectionHeadings[i].match(/==+ *([^=]+?) *==+/)[1];
             for(let struct of STRUCTURE) {
-                if(struct.heading == heading) {
-                    const sectionStart = infoCode.indexOf(sectionHeadings[i]) + sectionHeadings[i].length + 1;
-                    const sectionEnd = i < sectionHeadings.length - 1 
-                            ? infoCode.indexOf(sectionHeadings[i + 1]) - 1
-                            : infoCode.length;
-                    let newSegment = await struct.render(infoCode.slice(sectionStart, sectionEnd), data);
-                    if(!newSegment.endsWith('\n')) {
-                        newSegment += '\n';
-                    }
-                    infoCode = infoCode.slice(0, sectionStart) + newSegment + infoCode.slice(sectionEnd);
-                    break;
+                if(struct.heading != heading) {
+                    continue;
                 }
+
+                const sectionStart = infoCode.indexOf(sectionHeadings[i]) + sectionHeadings[i].length + 1;
+                const sectionEnd = i < sectionHeadings.length - 1 
+                        ? infoCode.indexOf(sectionHeadings[i + 1]) - 1
+                        : infoCode.length;
+                let newSegment = await struct.render(infoCode.slice(sectionStart, sectionEnd), data);
+                if(!newSegment.endsWith('\n')) {
+                    newSegment += '\n';
+                }
+                infoCode = infoCode.slice(0, sectionStart) + newSegment + infoCode.slice(sectionEnd);
             }
         }
         code = code.slice(0, infoStart) + infoCode + code.slice(infoEnd);
@@ -678,7 +679,7 @@ function match(text, index, start, end) {
                 bot: true,
                 tags: 'Bot',
                 token: await api.getToken('csrf', true)
-            }).then((res) => LOGGER.info(JSON.stringify(res)));
+            }).then((res) => LOGGER.info(Colors.white(JSON.stringify(res)) + '\n'));
 
             const interval = 300;
             if(!FLAG_PRODUCTION) {
