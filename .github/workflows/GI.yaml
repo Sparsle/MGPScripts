@@ -10,6 +10,7 @@ on:
         required: true
         options:
           - 'BirthdayArtwork'
+          - 'CharaInformation'
           - 'UpdateData'
 
 jobs:
@@ -32,7 +33,9 @@ jobs:
         run: node src/GI/BirthdayArtwork.js
 
   CharaInformation:
-    if: github.event_name == '5 4 7,14,21,28 * *'
+    if: |
+      github.event_name == 'schedule' || 
+      github.event.inputs.task == 'CharaInformation'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
