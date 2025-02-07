@@ -506,16 +506,14 @@ function match(text, index, start, end) {
         const charaCount = Object.keys(charaList).length;
         const partLength = parseInt(charaCount / 4);
         const partIndex = new Date().getDate() / 7;
-        queue = Object.fromEntries(
-            Object.entries(charaList)
-                .slice(
-                    partLength * (partIndex - 1),
-                    partIndex != 4
-                        ? partLength * partIndex
-                        : charaCount
-                )
-                .filter((chara) => chara[0] != '埃洛伊')
-        );
+        queue = Object.entries(charaList)
+            .slice(
+                partLength * (partIndex - 1),
+                partIndex != 4
+                    ? partLength * partIndex
+                    : charaCount
+            )
+            .filter((chara) => chara[0] != '埃洛伊');
     } else {
         queue = [
             //'琴', '安柏', '丽莎', '凯亚', '芭芭拉', '迪卢克', '雷泽', '温迪', '可莉', '班尼特', '诺艾尔', '菲谢尔', '砂糖', '莫娜', '迪奥娜', '阿贝多', '罗莎莉亚', '优菈', '米卡'
