@@ -300,13 +300,13 @@ let STRUCTURE = [
              * 将数据库中的语音 (quote.***) 与现有语音 (current***) 逐一进行匹配:
              * 
              *   1. 现有语音中检查到额外内容 (hasSpecialContent), 则保持原样
-             *      (避免覆盖用户添加的额外内容，缺点是不能格式化)
+             *      (避免覆盖用户添加的额外内容, 缺点是不能格式化)
              * 
              *   2. 现有语音无额外内容, 则使用数据库的内容
              *      (从而能够更新内容, 格式化, 修补各种衍夺讹舛等)
              * 
              *   3. 未匹配到现有语音, 则添加数据库的内容
-             *      (从反面讲，与数据库匹配不上的、且无额外内容的现有语音会被删除)
+             *      (从反面讲, 与数据库匹配不上的、 且无额外内容的现有语音会被删除)
              * 
              * 流程简图：
              *   
@@ -325,7 +325,7 @@ let STRUCTURE = [
              *                                   x                │
              *                                   │                │
              *                                   ↓                │
-             *                               [Case 3] ────────────┴── $D_TITLE$ ───(d_process)──> [End]
+             *                                [Case 3] ───────────┴── $D_TITLE$ ───(d_process)──> [End]
              * 
              * 此外, footprint 用于减少比对次数, 提升匹配性能
              */
@@ -505,7 +505,7 @@ function match(text, index, start, end) {
         }
         const charaCount = Object.keys(charaList).length;
         const partLength = parseInt(charaCount / 4);
-        const partIndex = date / 7;
+        const partIndex = new Date().getDate() / 7;
         queue = Object.fromEntries(
             Object.entries(charaList)
                 .slice(
@@ -518,7 +518,6 @@ function match(text, index, start, end) {
         );
     } else {
         queue = [
-            '达达利亚', '阿蕾奇诺', '埃洛伊'
             //'琴', '安柏', '丽莎', '凯亚', '芭芭拉', '迪卢克', '雷泽', '温迪', '可莉', '班尼特', '诺艾尔', '菲谢尔', '砂糖', '莫娜', '迪奥娜', '阿贝多', '罗莎莉亚', '优菈', '米卡'
             //'魈', '北斗', '凝光', '香菱', '行秋', '重云', '刻晴', '七七', '钟离', '辛焱', '甘雨', '胡桃', '烟绯', '云堇', '申鹤', '夜兰', '瑶瑶', '白术', '闲云', '嘉明', '蓝砚'
         ].map((name) => [name, charaList[name]]);
