@@ -413,6 +413,7 @@ function processDataText(text, { noLineBreak = true } = {}) {
         .replaceAll(/<i>(.+?)<\/i>/gs, '\'\'$1\'\'')
         .replaceAll(/{M# ?(.+?)}{F# ?(.+?)}/g, '$1 / $2')
         .replaceAll(/{PLAYERAVATAR#SEXPRO\[INFO_MALE_PRONOUN_HE\|INFO_FEMALE_PRONOUN_SHE\]}/g, '他 / 她')
+        .replaceAll(/{MATEAVATAR#SEXPRO\[INFO_MALE_PRONOUN_BOYD\|INFO_FEMALE_PRONOUN_GIRLD\]}/g, '王子 / 公主')
         .replaceAll(/{NICKNAME}/g, '{{UserName}}')
         .replaceAll(/{REALNAME\[ID\(1\)\]}/g, '流浪者')
         .replaceAll(/[^{]({[^{}]+?})[^}]/g, (whole, variable) => {
