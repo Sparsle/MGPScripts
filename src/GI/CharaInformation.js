@@ -416,7 +416,7 @@ function processDataText(text, { noLineBreak = true } = {}) {
         .replaceAll(/{NICKNAME}/g, '{{UserName}}')
         .replaceAll(/{REALNAME\[ID\(1\)\]}/g, '流浪者')
         .replaceAll(/[^{]({[^{}]+?})[^}]/g, (whole, variable) => {
-            LOGGER.warn(
+            LOGGER.error(
                 `在数据中检测到未被替换的变量 ${variable} 。\n`, 
                 { noRepeat: true }
             );
@@ -706,7 +706,7 @@ function match(text, index, start, end) {
 
     if(!FLAG_TESTING) {
         if(FLAG_PRODUCTION) {
-            await LOGGER.endAndUpload(api, `${CONFIG.USERNAME.replace('@', '/')}/Log`);
+            await LOGGER.endAndUpload(api, `User:${CONFIG.USERNAME.replace('@', '/')}/Log`);
         }
         await api.logout();
     }
