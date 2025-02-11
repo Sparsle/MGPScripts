@@ -659,15 +659,16 @@ function match(text, index, start, end) {
         /**
          * 提交处理后的源码
          */
-        if(!FLAG_TESTING) {
-            //fs.writeFileSync('./code.out', code);
-            //break;
+        if(FLAG_TESTING) {
+            fs.writeFileSync('./code.out', code);
+            break;
+        }
 
-            if(code == rawCode) {
-                LOGGER.info('条目没有变化。\n');
-                continue;
-            }
-
+        //fs.writeFileSync('./code.out', code);
+        //break;
+        if(code == rawCode) {
+            LOGGER.info('条目没有变化。\n');
+        } else {
             response = await api.post({
                 action: 'edit',
                 title: '' || (redirects[name] ?? name),
@@ -678,30 +679,30 @@ function match(text, index, start, end) {
                 tags: 'Bot',
                 token: await api.getToken('csrf', true)
             }).then((res) => LOGGER.info(Colors.white(JSON.stringify(res)) + '\n'));
+        }
 
-            const interval = 300;
-            if(!FLAG_PRODUCTION) {
-                const bar = new ProgressBar(
-                    `[${Colors.blue('WAITING')}] │:bar│  :currents/${interval}s`, 
-                    {
-                        total: interval,
-                        width: 30,
-                        complete: '█',
-                        incomplete: '░'
-                    }
-                );
-                while(!bar.complete) {
-                    bar.tick();
-                    await new Promise(resolve => setTimeout(resolve, 1000));
+        /**
+         * 待机，防止频繁访问 API
+         */
+        const interval = 300;
+        if(!FLAG_PRODUCTION) {
+            const bar = new ProgressBar(
+                `[${Colors.blue('WAITING')}] │:bar│  :currents/${interval}s`, 
+                {
+                    total: interval,
+                    width: 30,
+                    complete: '█',
+                    incomplete: '░'
                 }
-            } else {
-                for(let i = 1; i < interval; i++) {
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                }
+            );
+            while(!bar.complete) {
+                bar.tick();
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
         } else {
-            fs.writeFileSync('./code.out', code);
-            break;
+            for(let i = 1; i < interval; i++) {
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
         }
     }
 
