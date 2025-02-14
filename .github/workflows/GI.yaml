@@ -3,58 +3,22 @@ name: GI
 on:
   schedule:
     - cron: '5 4 * * *' # 12:05 CST
+    - cron: '5 7 * * *' # 15:05 CST
   workflow_dispatch:
     inputs:
       task:
         type: choice
         required: true
         options:
+          - 'UpdateData'
           - 'BirthdayArtwork'
           - 'CharaInformation'
-          - 'UpdateData'
+          - 'BirthdayMail'
 
 jobs:
-  BirthdayArtwork:
-    if: |
-      github.event_name == 'schedule' || 
-      github.event.inputs.task == 'BirthdayArtwork'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-          cache: 'npm'
-      - name: Run Script
-        env:
-          CONFIG: ${{ secrets.CONFIG }}
-        run: node src/GI/BirthdayArtwork.js
-
-  CharaInformation:
-    if: |
-      github.event_name == 'schedule' || 
-      github.event.inputs.task == 'CharaInformation'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-          cache: 'npm'
-      - name: Install dependencies
-        run: npm ci
-      - name: Run Script
-        env:
-          CONFIG: ${{ secrets.CONFIG }}
-        run: node src/GI/CharaInformation.js
-
   UpdateData:
     if: |
-      github.event_name == 'schedule' || 
+      github.event.schedule == '5 4 * * *' ||
       github.event.inputs.task == 'UpdateData'
     runs-on: ubuntu-latest
     steps:
@@ -80,3 +44,59 @@ jobs:
             git commit -m "Update GI.json automatically"
             git push
           fi
+
+  BirthdayArtwork:
+    if: |
+      github.event.schedule == '5 4 * * *' ||
+      github.event.inputs.task == 'BirthdayArtwork'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+      - name: Run Script
+        env:
+          CONFIG: ${{ secrets.CONFIG }}
+        run: node src/GI/BirthdayArtwork.js
+
+  CharaInformation:
+    if: |
+      github.event.schedule == '5 4 * * *' ||
+      github.event.inputs.task == 'CharaInformation'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run Script
+        env:
+          CONFIG: ${{ secrets.CONFIG }}
+        run: node src/GI/CharaInformation.js
+
+  BirthdayMail:
+    if: |
+      github.event.schedule == '5 7 * * *' ||
+      github.event.inputs.task == 'BirthdayMail'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+      - name: Run Script
+        env:
+          CONFIG: ${{ secrets.CONFIG }}
+        run: node src/GI/BirthdayMail.js
