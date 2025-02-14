@@ -36,8 +36,8 @@ async function fetchPosts() {
         let [_, name, description] = titleMatch.values();
 
         let content = postItem.post.structured_content
-            .match(/{\"insert\":\"(.+)\\n\"}/)[1]
-            .replaceAll('\\n', '\n\n');
+            .match(/{\"insert\":\"(.+?)\\n\"}/)[1]
+            .replaceAll('\\n', '\n');
 
         birthdayList.push([
             name, 
@@ -46,8 +46,9 @@ async function fetchPosts() {
             `
 {{Hide|标题=[https://www.miyoushe.com/ys/article/${postId} ${description}]
 |内容=[[File:YuanShen${today.getFullYear()}${name}生日贺图.jpg|400px|缩略图|无]]
-
+<poem>
 ${content}
+</poem>
 }}
 `
         ]);
@@ -119,7 +120,7 @@ async function addToCharaPage() {
             token: await api.getToken('csrf', true)
         }).then(console.log);
 
-        setTimeout(() => {}, 2000);
+        setTimeout(() => {}, 60000);
     }
 }
 
@@ -128,8 +129,8 @@ await fetchPosts();
 if(birthdayList.length > 0) {
     await api.login();
 
-    await addToListPage();
     await addToCharaPage();
+    await addToListPage();
 
     await api.logout();
 }
