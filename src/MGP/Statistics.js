@@ -18,6 +18,7 @@ const response = await api.post({
     format: 'json'
 });
 const stat = response.query.statistics;
+console.log(stat);
 
 let json = readData('MGP', 'stat');
 json.dataset.source.push([
