@@ -18,7 +18,7 @@ const dataTable = {
 
         return Object.fromEntries(
             Object.entries(json.data.items)
-                .filter(([_, v]) => v.name != '旅行者' && parseInt(v.release) * 1000 < today)
+                .filter(([_, v]) => v.name != '旅行者' && parseInt(v.release) * 1000 <= today)
                 .map(([_, v]) => [v.name, v.id])
         );
     }, 
@@ -55,7 +55,7 @@ const dataTable = {
         mergedData[dataName] = await dataTable[dataName]();
     }
 
-    writeData('GI', JSON.stringify(mergedData));
+    writeData('GI', '', JSON.stringify(mergedData));
 
     await api.logout();
 })();
