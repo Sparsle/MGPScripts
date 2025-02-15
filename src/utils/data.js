@@ -5,9 +5,12 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-function readData(dataName, itemName) {
+function readData(dataName, itemName='') {
     const filePath = path.join(__dirname, `../../data/${dataName}.json`);
-    const ret = JSON.parse(fs.readFileSync(filePath, 'utf8'))[itemName];
+    let ret = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    if(itemName != '') {
+        ret = ret[itemName];
+    }
     if(ret !== undefined) {
         return ret;
     } else {
@@ -15,9 +18,15 @@ function readData(dataName, itemName) {
     }
 }
 
-function writeData(dataName, data) {
+function writeData(dataName, itemName, data) {
     const filePath = path.join(__dirname, `../../data/${dataName}.json`);
-    fs.writeFileSync(filePath, data);
+    if(itemName = '') {
+        fs.writeFileSync(filePath, data);
+    } else {
+        let wholeData = readData(dataName);
+        wholeData[itemName] = data;
+        fs.writeFileSync(filePath, JSON.stringify(wholeData));
+    }
 }
 
 export { readData, writeData };
