@@ -20,7 +20,7 @@ function readData(dataName, itemName='') {
 
 function writeData(dataName, itemName, data) {
     const filePath = path.join(__dirname, `../../data/${dataName}.json`);
-    if(itemName = '') {
+    if(itemName == '') {
         fs.writeFileSync(filePath, data);
     } else {
         let wholeData = readData(dataName);
