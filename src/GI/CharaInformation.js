@@ -700,9 +700,7 @@ function match(text, index, start, end) {
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
         } else {
-            for(let i = 1; i < interval; i++) {
-                await new Promise(resolve => setTimeout(resolve, 1000));
-            }
+            await new Promise(resolve => setTimeout(resolve, interval * 1000));
         }
     }
 
