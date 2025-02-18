@@ -11,7 +11,7 @@ const api = new mw.Api({
 
 await api.login();
 
-const response = await api.post({
+let response = await api.post({
     action: 'query',
     meta: 'siteinfo',
     siprop: 'statistics',
@@ -30,10 +30,13 @@ json.dataset.source.push([
 json.temp = stat.edits;
 writeData('MGP', 'stat', json);
 
+let submitText = `<center><div style="display:inline-block;border:1px solid #a2a9b1;background:#f8f9fa;padding:1em 0 0 3em">
+{{Echart|data=<nowiki>${JSON.stringify(json).replace(/"temp":.+?,/, "")}</nowiki>|width=650|height=400}}
+</div></center>`;
 response = await api.post({
     action: 'edit',
-    title: `User:${CONFIG.USERNAME.slice(0, -4)}/statistics.json`,
-    text: JSON.stringify(json).replace(/"temp":.+?,/, ""),
+    title: `User:${CONFIG.USERNAME.slice(0, -4)}/statistics`,
+    text: submitText,
     bot: true,
     tags: 'Bot',
     token: await api.getToken('csrf', true)
