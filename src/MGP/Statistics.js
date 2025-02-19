@@ -40,6 +40,6 @@ response = await api.post({
     bot: true,
     tags: 'Bot',
     token: await api.getToken('csrf', true)
-}).then(console.log);
+});
 
 await api.logout();
