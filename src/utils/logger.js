@@ -65,7 +65,7 @@ LOGGER.endAndUpload = async (api, title) => {
             bot: true,
             tags: 'Bot',
             token: await api.getToken('csrf', true)
-        }).then(console.log);
+        });
     });
     logger.end();
 }
