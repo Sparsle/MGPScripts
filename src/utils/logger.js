@@ -54,20 +54,18 @@ for(let level of Object.keys(loggerLevels)) {
 }
 
 LOGGER.endAndUpload = async (api, title) => {
-    logger.on('finish', async () => {
-        await new Promise(resolve => setTimeout(resolve, 0));
-        const log = fs.readFileSync('./log', 'utf8')
-            .replaceAll(/\[.+?m/g, '');
-        await api.post({
-            action: 'edit',
-            title: title,
-            text: `__NOINDEX__<pre>\n${log}</pre>`,
-            bot: true,
-            tags: 'Bot',
-            token: await api.getToken('csrf', true)
-        });
-    });
     logger.end();
+    await new Promise(resolve => setTimeout(resolve, 100));
+    const log = fs.readFileSync('./log', 'utf8')
+        .replaceAll(/\[.+?m/g, '');
+    await api.post({
+        action: 'edit',
+        title: title,
+        text: `__NOINDEX__<pre>\n${log}</pre>`,
+        bot: true,
+        tags: 'Bot',
+        token: await api.getToken('csrf', true)
+    });
 }
 
 export default LOGGER;
