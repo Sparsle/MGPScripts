@@ -27,10 +27,8 @@ let STRUCTURE = [
         enabled: true,
         render: async (segment, data) => {
             if(hasSpecialContent(segment)) {
-                LOGGER.warn(
-                    `天赋检测到额外内容。\n`, 
-                    { noRepeat: true }
-                );
+                LOGGER.warn(`天赋检测到额外内容。\n`);
+                return segment;
             }
 
             const putParamIntoDesc = (desc, params) => {
@@ -114,7 +112,7 @@ let STRUCTURE = [
                 ret += `|-\n`
                      + `|align=center rowspan=2| '''${skill.Name}'''<br/><span style="font-size:13px">战斗天赋</span>\n`
                      + `|<poem>\n`
-                     + `${processDataText(skill.Desc, { noLineBreak: false })}\n`
+                     + `${processDataText(skill.Desc, { removeLineBreak: false })}\n`
                      + `</poem>\n`
                      + `|-\n`
                      + `|style="max-width:0;padding:0"|<div style="overflow:auto">\n`
@@ -131,7 +129,7 @@ let STRUCTURE = [
                 ret += `|-\n`
                      + `|align=center| '''${passive.Name}'''<br/><span style="font-size: 13px;">固有天赋</span>\n`
                      + `|<poem>\n`
-                     + `${processDataText(passive.Desc, { noLineBreak: false })}\n`
+                     + `${processDataText(passive.Desc, { removeLineBreak: false })}\n`
                      + `</poem>\n`
                      + ``;
             }
@@ -170,7 +168,7 @@ let STRUCTURE = [
                         continue;
                     }
 
-                    if(hasSpecialContent(currentName, { noColor: true })) {
+                    if(hasSpecialContent(currentName, { removeColor: true })) {
                         LOGGER.warn(
                             `${Colors.white(data.Name)} 的命之座名称 ${Colors.bgGray.brightWhite(currentName)} 检测到额外内容。\n`, 
                             { noRepeat: true }
@@ -226,7 +224,7 @@ let STRUCTURE = [
                 footprint = {};
             for(let story of data.CharaInfo.Stories) {
                 let pushTitle = `${processDataText(story.Title)}`,
-                    pushText = `<poem>\n${processDataText(story.Text, { noLineBreak: false })}\n</poem>\n`;
+                    pushText = `<poem>\n${processDataText(story.Text, { removeLineBreak: false })}\n</poem>\n`;
                 if(story.Unlock.length != 0) {
                     pushTitle += `<br/>{{nobold|1=<span style="font-size:13px;">${story.Unlock.reverse().join('<br/>')}</span>}}\n`;
                 } else {
@@ -242,14 +240,14 @@ let STRUCTURE = [
                         continue;
                     }
 
-                    if(hasSpecialContent(currentTitle, { noColor: true })) {
+                    if(hasSpecialContent(currentTitle, { removeColor: true })) {
                         LOGGER.warn(
                             `${Colors.white(data.Name)} 的故事标题 ${Colors.bgGray.brightWhite(currentTitle)} 检测到额外内容。\n`, 
                             { noRepeat: true }
                         );
                         pushTitle = currentTitle.trimStart();
                     }
-                    if(hasSpecialContent(currentText, { noColor: true })) {
+                    if(hasSpecialContent(currentText, { removeColor: true })) {
                         LOGGER.warn(
                             `${Colors.white(data.Name)} 的故事 ${Colors.bgGray.brightWhite(pCurrentTitle)} 的文本检测到额外内容。\n`, 
                             { noRepeat: true }
@@ -340,7 +338,7 @@ let STRUCTURE = [
                 quote.Title = purifyDataTitle(quote.Title);
 
                 for(let [_, currentTitle, currentText] of lines) {
-                    let pCurrentTitle = purifyCurrentText(currentTitle, { noColor: true });
+                    let pCurrentTitle = purifyCurrentText(currentTitle, { removeColor: true });
                     if(!!footprint[pCurrentTitle]) {
                         continue;
                     }
@@ -348,7 +346,7 @@ let STRUCTURE = [
                         continue;
                     }
 
-                    if(hasSpecialContent(currentTitle, { noColor: true })) {
+                    if(hasSpecialContent(currentTitle, { removeLink: false, removeColor: true })) {
                         LOGGER.warn(
                             `${Colors.white(data.Name)} 的语音标题 ${Colors.bgGray.brightWhite(currentTitle)} 检测到额外内容。\n`, 
                             { noRepeat: true }
@@ -404,11 +402,11 @@ let STRUCTURE = [
 ];
 
 
-function processDataText(text, { noLineBreak = true } = {}) {
+function processDataText(text, { removeLineBreak = true } = {}) {
     return text
         .replace(/^#/, '')  // 含有变量的文本开头有 "#"
         .replaceAll('\\n·', '\n*')
-        .replaceAll('\\n', noLineBreak ? '<br/>' : '\n')
+        .replaceAll('\\n', removeLineBreak ? '<br/>' : '\n')
         .replaceAll(/<color=(.+?)>(.+?)<\/color>/gs, (_, hex, innerText) => `{{genshincolor|${colors[hex]}|${innerText}}}`)
         .replaceAll(/<i>(.+?)<\/i>/gs, '\'\'$1\'\'')
         .replaceAll(/{M# ?(.+?)}{F# ?(.+?)}/g, '$1 / $2')
@@ -431,7 +429,7 @@ function purifyDataTitle(text) {
         .replaceAll(/{REALNAME\[ID\(1\)\]}/g, '流浪者');
 }
 
-function purifyCurrentText(text, { noLink = true, noColor = false } = {}) {
+function purifyCurrentText(text, { removeLink = true, removeColor = false } = {}) {
     return text
         .trim()
         .replaceAll(/<!--.+?-->/gs, '')
@@ -445,11 +443,17 @@ function purifyCurrentText(text, { noLink = true, noColor = false } = {}) {
                 if(redirects[text] === undefined) {
                     redirects[text] = link;
                 }
+                LOGGER.warn(
+                    `文本 ${Colors.bgGray.brightWhite(whole.replaceAll('\n', '\\n').slice(0, 20) + '...')} 检测到额外链接。\n`, 
+                    { noRepeat: true }
+                );
             }
-            return noLink ? text : whole;
+            return removeLink ? text : whole;
         })
         .replaceAll(/<ref>.+?<\/ref>/gs, '')
-        .replaceAll(noColor ? /{{genshincolor\|.+?\|(.+?)}}/g : '', noColor ? '$1' : '')
+        .replaceAll(/{{genshincolor\|.+?\|(.+?)}}/g, (whole, text) => {
+            return removeColor ? text : whole;
+        })
         .replaceAll(/-{(?:.+?\|)?(.+?)}-/gs, (whole, text) => {
             LOGGER.warn(
                 `文本 ${Colors.bgGray.brightWhite(whole.replaceAll('\n', '\\n').slice(0, 20) + '...')} 检测到手动繁简转换。\n`, 
@@ -459,7 +463,7 @@ function purifyCurrentText(text, { noLink = true, noColor = false } = {}) {
         });
 }
 
-function hasSpecialContent(text, flags = { noLink: false }) {
+function hasSpecialContent(text, flags = { removeLink: false }) {
     return purifyCurrentText(text, flags) != text.trim();
 }
 
@@ -517,6 +521,7 @@ function match(text, index, start, end) {
             .filter((chara) => chara[0] != '埃洛伊');
     } else {
         queue = [
+            '梦见月瑞希'
             //'琴', '安柏', '丽莎', '凯亚', '芭芭拉', '迪卢克', '雷泽', '温迪', '可莉', '班尼特', '诺艾尔', '菲谢尔', '砂糖', '莫娜', '迪奥娜', '阿贝多', '罗莎莉亚', '优菈', '米卡'
             //'魈', '北斗', '凝光', '香菱', '行秋', '重云', '刻晴', '七七', '钟离', '辛焱', '甘雨', '胡桃', '烟绯', '云堇', '申鹤', '夜兰', '瑶瑶', '白术', '闲云', '嘉明', '蓝砚'
         ].map((name) => [name, charaList[name]]);
