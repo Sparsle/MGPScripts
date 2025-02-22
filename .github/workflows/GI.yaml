@@ -96,6 +96,10 @@ jobs:
         with:
           node-version: 22.x
           cache: 'npm'
+      - name: Set Timezone
+        uses: szenius/set-timezone@v2.0
+        with:
+          timezoneLinux: "Asia/Shanghai"
       - name: Run Script
         env:
           CONFIG: ${{ secrets.CONFIG }}
