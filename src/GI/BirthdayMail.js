@@ -79,12 +79,11 @@ async function addToCharaPage() {
             tags: 'Bot',
             token: await api.getToken('csrf', true)
         }).then(console.log);
-
-        setTimeout(() => {}, 60000);
     }
 }
 
 await fetchPosts();
+console.log(birthdayList);
 
 if(birthdayList.length > 0) {
     await api.login();
