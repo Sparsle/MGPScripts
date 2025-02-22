@@ -29,11 +29,11 @@ async function fetchPosts() {
             return;
         }
 
-        let titleMatch = title.match(/(.+)生日快乐Ⅰ(.+)/);
+        let titleMatch = title.match(/(.+)Ⅰ(.+)生日快乐/);
         if(!titleMatch) {
             return;
         }
-        let [_, name, subject] = titleMatch.values();
+        let [_, subject, name] = titleMatch.values();
         subject = subject.replaceAll('···', '…');
 
         let content = postItem.post.structured_content
