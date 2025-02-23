@@ -60,63 +60,57 @@ let STRUCTURE = [
             /**
              * 战斗天赋
              */
-            for(let skill of data.Skills) {
-                let items = {},
-                    names = [],
-                    longestName = '';
-                for(let promote of Object.values(skill.Promote)) {
-                    if(names.length == 0) {
-                        for(let i in promote.Desc) {
-                            if(promote.Desc[i] == '') {
-                                break;
-                            }
-                            names.push(promote.Desc[i].match(/(.+)\|.+/)[1]);
-                        }
+            for(let talent of data.Skills) {
+                let attrNames = [],
+                    attrValues = {},
+                    longestAttrName = '';
+                for(let i in talent.Promote["0"].Desc) {
+                    if(talent.Promote["0"].Desc[i] == '') {
+                        break;
                     }
-                    for(let i in promote.Desc) {
-                        if(promote.Desc[i] == '') {
+                    attrNames.push(talent.Promote["0"].Desc[i].match(/(.+)\|.+/)[1]);
+                    attrValues[i] = [];
+                    longestAttrName = longestAttrName.length < attrNames[i].length ? attrNames[i] : longestAttrName;
+                }
+                for(let level of Object.values(talent.Promote)) {
+                    for(let i in level.Desc) {
+                        if(level.Desc[i] == '') {
                             break;
                         }
-                        let value = putParamIntoDesc(promote.Desc[i].match(/.+\|(.+)/)[1], promote.Param);
-                        if(items[i] === undefined) {
-                            items[i] = [value];
-                            longestName = longestName.length < names[i].length ? names[i] : longestName;
-                        } else {
-                            items[i].push(value);
-                        }
+                        let value = putParamIntoDesc(level.Desc[i].match(/.+\|(.+)/)[1], level.Param);
+                        attrValues[i].push(value);
                     }
                 }
 
-                const columnWidth = longestName.replaceAll(/\/|·/g, '').length 
-                                  + 0.33 * (longestName.match(/\/|·/g) ?? []).length
+                const columnWidth = longestAttrName.replaceAll(/\/|·/g, '').length 
+                                  + 0.33 * (longestAttrName.match(/\/|·/g) ?? []).length
                                   + 1;
-                let promoteTable = `{| style="min-width:max-content;border-collapse:collapse;text-align:center;line-height:1.9"\n`
+                let talentAttrTable = `{| style="min-width:max-content;border-collapse:collapse;text-align:center;line-height:1.9"\n`
                                  + `|-\n`
                                  + `!style="position:sticky;left:0;background:#f8f9fa;min-width:${columnWidth}em"| 详细属性\n`
                                  + `!　!!Lv.1!!　!!Lv.2!!　!!Lv.3!!　!!Lv.4!!　!!Lv.5!!　!!Lv.6!!　!!Lv.7!!　!!Lv.8!!　!!Lv.9!!　!!Lv.10!!　!!{{color|blue|Lv.11}}!!　!!{{color|blue|Lv.12}}!!　!!{{color|blue|Lv.13}}!!　!!{{color|grey|Lv.14}}!!　!!{{color|grey|Lv.15}}\n`
                                  + ``;
-                Object.entries(items).forEach(([nameIndex, values]) => {
-                    let valuesReduced = '';
+                Object.entries(attrValues).forEach(([nameIndex, values]) => {
+                    let valuesJoined = '';
                     if(values[0] == values[1]) {
-                        valuesReduced = `style="position:sticky;left:${columnWidth + 1.3}em"| ${values[0]}`;
+                        valuesJoined = `style="position:sticky;left:${columnWidth + 1.3}em"| ${values[0]}`;
                     } else {
-                        valuesReduced = values.join('||||');
+                        valuesJoined = values.join('||||');
                     }
-                    promoteTable += `|-\n`
-                                  + `|style="position:sticky;left:0;background:#f8f9fa"| ${names[nameIndex]}\n`
-                                  //+ `| ${valuesReduced}\n`
-                                  + `|||${valuesReduced}\n`
+                    talentAttrTable += `|-\n`
+                                  + `|style="position:sticky;left:0;background:#f8f9fa"| ${attrNames[nameIndex]}\n`
+                                  + `|||${valuesJoined}\n`
                                   + ``;
                 });
 
                 ret += `|-\n`
-                     + `|align=center rowspan=2| '''${skill.Name}'''<br/><span style="font-size:13px">战斗天赋</span>\n`
+                     + `|align=center rowspan=2| '''${talent.Name}'''<br/><span style="font-size:13px">战斗天赋</span>\n`
                      + `|<poem>\n`
-                     + `${processDataText(skill.Desc, { removeLineBreak: false })}\n`
+                     + `${processDataText(talent.Desc, { removeLineBreak: false })}\n`
                      + `</poem>\n`
                      + `|-\n`
                      + `|style="max-width:0;padding:0"|<div style="overflow:auto">\n`
-                     + `${promoteTable}|-\n`
+                     + `${talentAttrTable}|-\n`
                      + `|}\n`
                      + `</div>\n`
                      + ``;
@@ -152,7 +146,7 @@ let STRUCTURE = [
                 .filter((s) => s.length == 2);
 
             let ret = [['']],
-                longestName = '',
+                longestAttrName = '',
                 footprint = {};
             for(let i = 0; i < data.Constellations.length; i++) {
                 let con = data.Constellations[i],
@@ -186,11 +180,11 @@ let STRUCTURE = [
                 }
 
                 ret.push([pushName, pushDesc]);
-                longestName = longestName.length < con.Name.length ? con.Name : longestName;
+                longestAttrName = longestAttrName.length < con.Name.length ? con.Name : longestAttrName;
             }
 
             ret = `{| class="wikitable"\n`
-                + `! style="min-width:${longestName.length + 1}em;" | 名称 !! 介绍\n`
+                + `! style="min-width:${longestAttrName.length + 1}em;" | 名称 !! 介绍\n`
                 + `${ret.map((s) => s.join(' || ')).join('|-\n| style="text-align:center;" | ')}|}`;
             return header + ret + footer;
         }
@@ -506,6 +500,7 @@ function match(text, index, start, end) {
     let queue = [];
     if(FLAG_PRODUCTION) {
         if(![7, 14, 21, 28].includes(new Date().getDate())) {
+            await api.logout();
             return;
         }
         const charaCount = Object.keys(charaList).length;
