@@ -363,7 +363,7 @@ let STRUCTURE = [
                     if(!!nameLinkFootprint[name]) {
                         continue;
                     }
-                    if(pushTitleWithoutLink.search(name) != -1) {
+                    if(pushTitleWithoutLink.search(name) == -1) {
                         continue;
                     }
 
