@@ -53,7 +53,7 @@ let STRUCTURE = [
                     }
                 });
             };
-            let ret = `{| class="wikitable" width=100%\n`
+            let ret = `{| class="mw-collapsible wikitable" width=100%\n`
                     + `!style="width:10em"| 天赋 !! 天赋介绍\n`
                     + ``;
 
@@ -183,7 +183,7 @@ let STRUCTURE = [
                 longestAttrName = longestAttrName.length < con.Name.length ? con.Name : longestAttrName;
             }
 
-            ret = `{| class="wikitable"\n`
+            ret = `{| class="mw-collapsible wikitable"\n`
                 + `! style="min-width:${longestAttrName.length + 1}em;" | 名称 !! 介绍\n`
                 + `${ret.map((s) => s.join(' || ')).join('|-\n| style="text-align:center;" | ')}|}`;
             return header + ret + footer;
@@ -323,7 +323,6 @@ let STRUCTURE = [
              */
             let ret = [['']],
                 footprint = {},
-                longestTitle = '',
                 nameLinkFootprint = {};
             nameLinkFootprint[data.Name] = true;
             for(let quote of data.CharaInfo.Quotes) {
@@ -377,11 +376,10 @@ let STRUCTURE = [
                 }
 
                 ret.push(['', pushTitle, pushText]);
-                longestTitle = longestTitle.length < quote.Title.length ? quote.Title : longestTitle;
             }
 
             ret = `{| class="mw-collapsible wikitable"\n`
-                + `! style="min-width:${longestTitle.length}em;" | 场合 !! 台词\n`
+                + `! style="min-width:min(20vw, 11em);" | 场合 !! 台词\n`
                 + `${ret.map((s) => s.join('\n| ')).join('|-')}|}`;
             ret = ret.replace(/(\|-\n\| .*?突破的感受·合.*?\n\| .+?\n)/, '$1|-\n! 场合 !! 战斗台词\n');
             return header + ret + footer;
@@ -485,7 +483,7 @@ function match(text, index, start, end) {
 }
 
 (async () => {
-    const FLAG_TESTING = false && !CONFIG.PRODUCTION;
+    const FLAG_TESTING = true && !CONFIG.PRODUCTION;
     const FLAG_PRODUCTION = CONFIG.PRODUCTION;
 
     /**
@@ -516,7 +514,7 @@ function match(text, index, start, end) {
             .filter((chara) => chara[0] != '埃洛伊');
     } else {
         queue = [
-            '梦见月瑞希'
+            '菲米尼'
             //'琴', '安柏', '丽莎', '凯亚', '芭芭拉', '迪卢克', '雷泽', '温迪', '可莉', '班尼特', '诺艾尔', '菲谢尔', '砂糖', '莫娜', '迪奥娜', '阿贝多', '罗莎莉亚', '优菈', '米卡'
             //'魈', '北斗', '凝光', '香菱', '行秋', '重云', '刻晴', '七七', '钟离', '辛焱', '甘雨', '胡桃', '烟绯', '云堇', '申鹤', '夜兰', '瑶瑶', '白术', '闲云', '嘉明', '蓝砚'
         ].map((name) => [name, charaList[name]]);
