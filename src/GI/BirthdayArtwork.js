@@ -5,7 +5,7 @@ import { readData } from '../utils/data.js';
 const api = new mw.Api({
     url: CONFIG.ZH_API,
     botUsername: CONFIG.USERNAME, 
-    botPassword: CONFIG.PASSWORD, 
+    botPassword: CONFIG.ZH_PASSWORD, 
     cookie: CONFIG.COOKIE
 });
 
@@ -100,12 +100,12 @@ async function addToCharaPage() {
         let code = response.query.pages[0].revisions[0].content;
 
         let start = code.search(/==== *生日 *==== *\n/);
-        let sliceToStart = code.slice(start);
-        let end = start + sliceToStart.search(/\n(?:===* *.+? *===* *\n|{{原神\|角色}})/);
+        let sliceFromStart = code.slice(start);
+        let end = start + sliceFromStart.search(/\n(?:===* *.+? *===* *\n|{{原神\|角色}})/);
 
-        if(sliceToStart.indexOf(description) != -1) {
+        if(sliceFromStart.indexOf(description) != -1) {
             continue;
-        } else if(sliceToStart.indexOf(`;${today.getFullYear()}年`) == -1) {
+        } else if(sliceFromStart.indexOf(`;${today.getFullYear()}年`) == -1) {
             snippet = `\n;${today.getFullYear()}年` + snippet;
         }
         code = code.slice(0, end) + snippet + code.slice(end);
@@ -119,8 +119,6 @@ async function addToCharaPage() {
             tags: 'Bot',
             token: await api.getToken('csrf', true)
         }).then(console.log);
-
-        setTimeout(() => {}, 60000);
     }
 }
 
