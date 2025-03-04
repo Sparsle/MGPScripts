@@ -9,7 +9,7 @@ import Colors from 'colors/safe.js';
 const api = new mw.Api({
     url: CONFIG.ZH_API,
     botUsername: CONFIG.USERNAME, 
-    botPassword: CONFIG.PASSWORD, 
+    botPassword: CONFIG.ZH_PASSWORD, 
     cookie: CONFIG.COOKIE
 });
 
@@ -704,7 +704,7 @@ function match(text, index, start, end) {
 
     if(!FLAG_TESTING) {
         if(FLAG_PRODUCTION) {
-            await LOGGER.endAndUpload(api, `User:${CONFIG.USERNAME.replace('@', '/')}/Log`);
+            await LOGGER.endAndUpload(api, `User:${CONFIG.USERNAME}/Bot/Log`);
         }
         await api.logout();
     }
