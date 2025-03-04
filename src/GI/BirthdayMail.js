@@ -5,7 +5,7 @@ import { readData } from '../utils/data.js';
 const api = new mw.Api({
     url: CONFIG.ZH_API,
     botUsername: CONFIG.USERNAME, 
-    botPassword: CONFIG.PASSWORD, 
+    botPassword: CONFIG.ZH_PASSWORD, 
     cookie: CONFIG.COOKIE
 });
 
