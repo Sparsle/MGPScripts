@@ -58,6 +58,8 @@ jobs:
         with:
           node-version: 22.x
           cache: 'npm'
+      - name: Set Timezone
+        run: sudo timedatectl set-timezone Asia/Shanghai
       - name: Run Script
         env:
           CONFIG: ${{ secrets.CONFIG }}
