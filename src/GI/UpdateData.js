@@ -6,7 +6,7 @@ import fs from 'fs';
 const api = new mw.Api({
     url: CONFIG.ZH_API,
     botUsername: CONFIG.USERNAME, 
-    botPassword: CONFIG.PASSWORD, 
+    botPassword: CONFIG.ZH_PASSWORD, 
     cookie: CONFIG.COOKIE
 });
 
@@ -55,7 +55,7 @@ const dataTable = {
         mergedData[dataName] = await dataTable[dataName]();
     }
 
-    writeData('GI', '', JSON.stringify(mergedData));
+    writeData('GI', undefined, JSON.stringify(mergedData));
 
     await api.logout();
 })();
