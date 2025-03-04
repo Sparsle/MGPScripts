@@ -5,7 +5,7 @@ import { readData, writeData } from '../utils/data.js';
 const api = new mw.Api({
     url: CONFIG.ZH_API,
     botUsername: CONFIG.USERNAME, 
-    botPassword: CONFIG.PASSWORD, 
+    botPassword: CONFIG.ZH_PASSWORD, 
     cookie: CONFIG.COOKIE
 });
 
@@ -40,6 +40,6 @@ response = await api.post({
     bot: true,
     tags: 'Bot',
     token: await api.getToken('csrf', true)
-});
+}).then(console.log);
 
 await api.logout();
