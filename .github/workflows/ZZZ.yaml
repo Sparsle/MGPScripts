@@ -1,0 +1,63 @@
+name: ZZZ
+
+on:
+  schedule:
+    - cron: '5 5 * * *' # 13:05 CST
+  workflow_dispatch:
+    inputs:
+      task:
+        type: choice
+        required: true
+        options:
+          - 'UpdateData'
+          - 'BirthdayArtwork'
+
+jobs:
+  UpdateData:
+    if: |
+      github.event.schedule == '5 5 * * *' ||
+      github.event.inputs.task == 'UpdateData'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+      - name: Run Script
+        env:
+          CONFIG: ${{ secrets.CONFIG }}
+        run: node src/ZZZ/UpdateData.js
+      - name: Commit and Push
+        run: |
+          git config --global user.name Sparsle
+          git config --global user.email ${{ secrets.EMAIL }}
+          git add data/ZZZ.json
+          if git diff-index --quiet HEAD; then
+            echo "No change."
+          else
+            git commit -m "Update ZZZ.json automatically"
+            git push
+          fi
+
+  BirthdayArtwork:
+    if: |
+      github.event.schedule == '5 5 * * *' ||
+      github.event.inputs.task == 'BirthdayArtwork'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+      - name: Set Timezone
+        run: sudo timedatectl set-timezone Asia/Shanghai
+      - name: Run Script
+        env:
+          CONFIG: ${{ secrets.CONFIG }}
+        run: node src/ZZZ/BirthdayArtwork.js
