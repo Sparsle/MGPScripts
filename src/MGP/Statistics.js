@@ -35,7 +35,7 @@ let submitText = `<center><div style="display:inline-block;border:1px solid #a2a
 </div></center>`;
 response = await api.post({
     action: 'edit',
-    title: `User:${CONFIG.USERNAME.slice(0, -4)}/statistics`,
+    title: `User:${CONFIG.USERNAME}/statistics`,
     text: submitText,
     bot: true,
     tags: 'Bot',
