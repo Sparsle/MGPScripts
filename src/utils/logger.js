@@ -1,5 +1,7 @@
 import winston from 'winston';
 import fs from 'fs';
+import mw from '../utils/mediawiki.js';
+import CONFIG from '../utils/config.js';
 const format = winston.format;
 
 const loggerLevels = {
@@ -42,7 +44,7 @@ const logger = winston.createLogger({
 
 const LOGGER = {};
 for(let level of Object.keys(loggerLevels)) {
-    LOGGER[level] = (message, {noRepeat = false} = {}) => {
+    LOGGER[level] = (message, {noRepeat = true} = {}) => {
         if(noRepeat) {
             if(loggedContent.includes(level + message)) {
                 return;
