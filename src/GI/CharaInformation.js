@@ -27,7 +27,7 @@ let STRUCTURE = [
         enabled: true,
         render: async (segment, data) => {
             if(hasSpecialContent(segment)) {
-                LOGGER.warn(`天赋检测到额外内容。\n`, {noRepeat = false});
+                LOGGER.warn(`天赋检测到额外内容。\n`, { noRepeat: false });
                 return segment;
             }
 
@@ -616,7 +616,7 @@ function match(text, index, start, end) {
             break;
         }
         if(code == rawCode) {
-            LOGGER.info('条目没有变化。\n', {noRepeat = false});
+            LOGGER.info('条目没有变化。\n', { noRepeat: false });
         } else {
             response = await api.post({
                 action: 'edit',
