@@ -6,6 +6,7 @@
   "author": "Sparsle",
   "license": "MIT",
   "dependencies": {
+    "big.js": "^6.2.2",
     "colors": "^1.4.0",
     "progress": "^2.0.3",
     "winston": "^3.17.0"
