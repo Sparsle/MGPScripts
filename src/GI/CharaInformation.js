@@ -2,6 +2,7 @@ import CONFIG from '../utils/config.js';
 import LOGGER from '../utils/logger.js';
 import mw from '../utils/mediawiki.js';
 import { readData } from '../utils/data.js';
+import Big from 'big.js';
 import fs from 'fs';
 import ProgressBar from 'progress';
 import Colors from 'colors/safe.js';
@@ -34,22 +35,22 @@ let STRUCTURE = [
             const putParamIntoDesc = (desc, params) => {
                 return desc.replaceAll(/{param(\d+):(.+?)}/g, (_, index, method) => {
                     index = parseInt(index) - 1;
+                    const param = new Big(params[index]);
                     switch(method) {
                         case 'F1P':
-                            return (
-                                parseFloat((params[index] * 100).toString().replace(/\.(.)4999/, '.$15000')) 
-                                    + Number.EPSILON
+                            return new Big(
+                                param.mul(100).toString().replace(/\.(.)4999/, '.$15000')
                             ).toFixed(1) + '%';
                         case 'F2P':
-                            return (params[index] * 100 + Number.EPSILON).toFixed(2) + '%';
+                            return param.mul(100).toFixed(2) + '%';
                         case 'P':
-                            return (params[index] * 100 + Number.EPSILON).toFixed(0) + '%';
+                            return param.mul(100).toFixed(0) + '%';
                         case 'F1':
-                            return (params[index] + Number.EPSILON).toFixed(1);
+                            return param.toFixed(1);
                         case 'F2':
-                            return (params[index] + Number.EPSILON).toFixed(2);
+                            return param.toFixed(2);
                         case 'I':
-                            return new Intl.NumberFormat('en-US').format((params[index] + Number.EPSILON).toFixed(0));
+                            return Intl.NumberFormat('en-US').format(param.round(0).toNumber());
                     }
                 });
             };
