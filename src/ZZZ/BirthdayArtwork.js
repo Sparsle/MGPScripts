@@ -178,7 +178,7 @@ async function uploadArtworks() {
     for(let item of birthdayList) {
         const cateStr = item.charasInArtwork.reduce(
             (cateStr, charaName) => cateStr + `[[分类:${redirects[charaName] ?? charaName}]] `, 
-            ''
+            '[[分类:绝区零贺图]] '
         );
         await api_cm.post({
             action: 'upload',
