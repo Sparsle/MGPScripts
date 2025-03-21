@@ -84,23 +84,3 @@ jobs:
         env:
           CONFIG: ${{ secrets.CONFIG }}
         run: node src/GI/CharaInformation.js
-
-  BirthdayMail:
-    if: |
-      github.event.schedule == '5 7 * * *' ||
-      github.event.inputs.task == 'BirthdayMail'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.x
-          cache: 'npm'
-      - name: Set Timezone
-        run: sudo timedatectl set-timezone Asia/Shanghai
-      - name: Run Script
-        env:
-          CONFIG: ${{ secrets.CONFIG }}
-        run: node src/GI/BirthdayMail.js
