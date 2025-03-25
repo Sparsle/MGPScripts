@@ -33,10 +33,10 @@ let STRUCTURE = [
             }
 
             const putParamIntoDesc = (desc, params) => {
-                return desc.replaceAll(/{param(\d+):(.+?)}/g, (_, index, method) => {
+                return desc.replaceAll(/{param(\d+):(.+?)}/g, (_, index, format) => {
                     index = parseInt(index) - 1;
                     const param = new Big(params[index]);
-                    switch(method) {
+                    switch(format) {
                         case 'F1P':
                             return new Big(
                                 param.mul(100).toString().replace(/\.(.)4999/, '.$15000')
@@ -74,6 +74,30 @@ let STRUCTURE = [
                     longestAttrName = longestAttrName.length < attrNames[i].length ? attrNames[i] : longestAttrName;
                 }
                 for(let level of Object.values(talent.Promote)) {
+                    // 修正数据源中存在的编号跳跃问题
+                    // bucket[i] = j 代表编号为 i 的参数属于第 j 个技能描述
+                    let bucket = [];
+                    for(let i in level.Desc) {
+                        if(level.Desc[i] == '') {
+                            break;
+                        }
+                        const indexMatch = level.Desc[i].matchAll(/{param(\d+):.+?}/g);
+                        for(let match of indexMatch) {
+                            bucket[parseInt(match[1])] = i;
+                        }
+                    }
+                    let offset = 0;
+                    for(let i = 1; i < bucket.length; i++) {
+                        if(bucket[i] === undefined) {
+                            offset++;
+                            continue;
+                        }
+                        let bef = level.Desc[bucket[i]];
+                        level.Desc[bucket[i]] = level.Desc[bucket[i]].replace(new RegExp(`{param${i}:(.+?)}`), (_, format) => {
+                            return `{param${i - offset}:${format}}`;
+                        });
+                    }
+
                     for(let i in level.Desc) {
                         if(level.Desc[i] == '') {
                             break;
@@ -464,6 +488,7 @@ function match(text, index, start, end) {
             .filter((chara) => chara[0] != '埃洛伊');
     } else {
         queue = [
+            '克洛琳德',
             //'琴', '安柏', '丽莎', '凯亚', '芭芭拉', '迪卢克', '雷泽', '温迪', '可莉', '班尼特', '诺艾尔', '菲谢尔', '砂糖', '莫娜', '迪奥娜', '阿贝多', '罗莎莉亚', '优菈', '米卡'
             //'魈', '北斗', '凝光', '香菱', '行秋', '重云', '刻晴', '七七', '钟离', '辛焱', '甘雨', '胡桃', '烟绯', '云堇', '申鹤', '夜兰', '瑶瑶', '白术', '闲云', '嘉明', '蓝砚'
         ].map((name) => [name, charaList[name]]);
@@ -476,7 +501,7 @@ function match(text, index, start, end) {
      * 逐一编辑条目
      */
     for(let [name, id] of queue) {
-        LOGGER.info(`正在编辑 ${Colors.white(name)} 条目。\n`);
+        LOGGER.info(`正在编辑 ${Colors.white(name)}（${Colors.white(id)}） 条目。\n`);
 
         /**
          * 获取页面源码
