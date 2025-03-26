@@ -44,14 +44,15 @@ async function fetchPosts(offset) {
         const structuredContent = JSON.parse(postItem.post.structured_content);
         const content = structuredContent[1].insert;
         const artworkURL = structuredContent[0].insert.image;
-        const artworkFileName = `原神${date.getFullYear()}${name}生日贺图${artworkURL.match(/\.[^\.]+?$/)[0]}`;
+        const artworkFileName = `YuanShen${date.getFullYear()}${name}生日贺图${artworkURL.match(/\.[^\.]+?$/)[0]}`;
 
         birthdayList.push({
             name: name,
             title: title,
+            year: date.getFullYear(),
             artworkURL: artworkURL,
             artworkFileName: artworkFileName,
-            listPageSnippet: `File:YuanShen${today.getFullYear()}${name}生日贺图.jpg|[[${name}]]生日${dateFormat(date)}<br>[https://www.miyoushe.com/ys/article/${postId} ${title}]`,
+            listPageSnippet: `File:${artworkFileName}|[[${name}]]生日${dateFormat(date)}<br>[https://www.miyoushe.com/ys/article/${postId} ${title}]`,
             charaPageSnippet: `
 {{Hide|标题=[https://www.miyoushe.com/ys/article/${postId} ${title}]
 |内容=[[File:${artworkFileName}|400px|缩略图|无]]
@@ -120,7 +121,7 @@ async function addToCharaPage() {
         const rawCode = response.query.pages[0].revisions[0].content;
         let code = rawCode;
 
-        let start = code.search(new RegExp(`== *.+?（.+?·.+?） *== *\n`));
+        let start = code.search(new RegExp(`== *.+?·.+?(.+?) *== *\n`));
         if(start == -1) {
             continue;
         }
