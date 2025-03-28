@@ -74,6 +74,7 @@ let STRUCTURE = [
                     longestAttrName = longestAttrName.length < attrNames[i].length ? attrNames[i] : longestAttrName;
                 }
                 for(let level of Object.values(talent.Promote)) {
+                    /*
                     // 修正数据源中存在的编号跳跃问题
                     // bucket[i] = j 代表编号为 i 的参数属于第 j 个技能描述
                     let bucket = [];
@@ -97,6 +98,7 @@ let STRUCTURE = [
                             return `{param${i - offset}:${format}}`;
                         });
                     }
+                    */
 
                     for(let i in level.Desc) {
                         if(level.Desc[i] == '') {
@@ -464,7 +466,7 @@ function match(text, index, start, end) {
 }
 
 (async () => {
-    const FLAG_TESTING = true && !CONFIG.PRODUCTION;
+    const FLAG_TESTING = false && !CONFIG.PRODUCTION;
     const FLAG_PRODUCTION = CONFIG.PRODUCTION;
 
     /**
@@ -488,7 +490,7 @@ function match(text, index, start, end) {
             .filter((chara) => chara[0] != '埃洛伊');
     } else {
         queue = [
-            '克洛琳德',
+            '玛薇卡',
             //'琴', '安柏', '丽莎', '凯亚', '芭芭拉', '迪卢克', '雷泽', '温迪', '可莉', '班尼特', '诺艾尔', '菲谢尔', '砂糖', '莫娜', '迪奥娜', '阿贝多', '罗莎莉亚', '优菈', '米卡'
             //'魈', '北斗', '凝光', '香菱', '行秋', '重云', '刻晴', '七七', '钟离', '辛焱', '甘雨', '胡桃', '烟绯', '云堇', '申鹤', '夜兰', '瑶瑶', '白术', '闲云', '嘉明', '蓝砚'
         ].map((name) => [name, charaList[name]]);
@@ -562,7 +564,7 @@ function match(text, index, start, end) {
         let infoStart = code.search(new RegExp(`${data.CharaInfo.Title} ?· ?${name}\\(${data.CharaInfo.Vision}\\)`));
         if(infoStart == -1) {
             infoStart = code.search(/\n== *角色相关 *== */);
-            infoStart += code.slice(infoStart).indexOf('\n');
+            infoStart += code.slice(infoStart + 1).indexOf('\n') + 1;
             const offset = code.slice(infoStart).search(/\n== *[^=]+? *== */);
             if(offset == -1) {
                 infoStart = code.length;
