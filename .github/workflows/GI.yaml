@@ -67,7 +67,6 @@ jobs:
 
   CharaInformation:
     if: |
-      #github.event.schedule == '5 4 * * *' ||
       github.event.inputs.task == 'CharaInformation'
     runs-on: ubuntu-latest
     steps:
