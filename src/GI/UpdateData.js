@@ -28,7 +28,7 @@ const dataTable = {
             action: 'query',
             prop: 'revisions',
             titles: `原神`,
-            rvsection: 13,
+            rvsection: 12,
             rvprop: 'content'
         });
         const code = response.query.pages[0].revisions[0].content;
