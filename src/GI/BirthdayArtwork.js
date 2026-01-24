@@ -35,7 +35,7 @@ async function fetchPosts(offset) {
             return;
         }
 
-        let subjectMatch = subject.match(/(.+)生日快乐 | (.+)/);
+        let subjectMatch = subject.match(/(.+)生日快乐(?: \| |｜)(.+)/);
         if(!subjectMatch) {
             return;
         }
