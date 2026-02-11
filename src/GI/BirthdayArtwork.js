@@ -36,6 +36,7 @@ async function fetchPosts(offset) {
         }
 
         let subjectMatch = subject.match(/(.+)生日快乐(?: \| |｜)(.+)/);
+        console.log(subject);
         if(!subjectMatch) {
             return;
         }
@@ -96,6 +97,8 @@ async function addToListPage() {
         );
     }
 
+
+
     if(code == rawCode) {
         return;
     }
@@ -103,7 +106,7 @@ async function addToListPage() {
         action: 'edit',
         title: '原神/贺图',
         text: code,
-        summary: CONFIG.SUMMARY('自动添加角色生日贺图'),
+        summary: CONFIG.SUMMARY('添加角色生日贺图'),
         bot: true,
         tags: 'Bot',
         token: await api.getToken('csrf', true)
@@ -121,17 +124,17 @@ async function addToCharaPage() {
         const rawCode = response.query.pages[0].revisions[0].content;
         let code = rawCode;
 
-        let start = code.search(new RegExp(`== *.+?·.+?(.+?) *== *\n`));
+        let start = code.search(/== *(?:.+?·.+?\(.+?\)|角色资料) *== *\n/);
         if(start == -1) {
             continue;
         }
-        if(code.slice(start).search(/==== *生日 *==== *\n/) == -1) {
+        if(code.slice(start).search(/=== *生日 *=== *\n/) == -1) {
             start = start + code.slice(start).indexOf('\n');
             start = start + code.slice(start).search(/\n(?:== *[^=]+? *== *\n|{{原神\|角色}})/);
-            item.charaPageSnippet = `\n==== 生日 ====\n;${item.year}年` + item.charaPageSnippet;
+            item.charaPageSnippet = `\n=== 生日 ===\n;${item.year}年` + item.charaPageSnippet;
             code = code.slice(0, start) + item.charaPageSnippet + code.slice(start);
         } else {
-            start = code.search(/==== *生日 *==== *\n/);
+            start = code.search(/=== *生日 *=== *\n/);
             const sliceFromStart = code.slice(start);
             const end = start + sliceFromStart.search(/\n(?:==+ *.+? *==+ *\n|{{原神\|角色}})/);
 
@@ -150,7 +153,7 @@ async function addToCharaPage() {
             action: 'edit',
             title: redirects[item.name] ?? item.name,
             text: code,
-            summary: CONFIG.SUMMARY('自动添加角色生日贺图'),
+            summary: CONFIG.SUMMARY('添加角色生日贺图'),
             bot: true,
             tags: 'Bot',
             token: await api.getToken('csrf', true)
