@@ -18,7 +18,8 @@ const dataTable = {
 
         return Object.fromEntries(
             Object.entries(json.data.items)
-                .filter(([_, v]) => v.name != '旅行者' && parseInt(v.release) * 1000 <= today)
+                .filter(([_, v]) => v.name != '旅行者' && !v.name.startsWith('奇偶'))
+                .filter(([_, v]) => parseInt(v.release) * 1000 <= today)
                 .map(([_, v]) => [v.name, v.id])
         );
     }, 
