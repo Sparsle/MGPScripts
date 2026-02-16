@@ -13,12 +13,11 @@ on:
           - 'UpdateData'
           - 'BirthdayArtwork'
           - 'CharaInformation'
-          - 'BirthdayMail'
 
 jobs:
   UpdateData:
     if: |
-      github.event.schedule == '5 4 * * *' ||
+      github.event.schedule == '5 7 * * *' ||
       github.event.inputs.task == 'UpdateData'
     runs-on: ubuntu-latest
     steps:
@@ -67,7 +66,8 @@ jobs:
 
   CharaInformation:
     if: |
-      github.event.inputs.task == 'CharaInformation'
+      github.event.schedule == '5 4 * * *' ||
+      github.event.inputs.task == 'CharaInfo'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -82,4 +82,4 @@ jobs:
       - name: Run Script
         env:
           CONFIG: ${{ secrets.CONFIG }}
-        run: node src/GI/CharaInformation.js
+        run: node src/GI/CharaInfo.js
