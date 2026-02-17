@@ -64,7 +64,7 @@ jobs:
           CONFIG: ${{ secrets.CONFIG }}
         run: node src/GI/BirthdayArtwork.js
 
-  CharaInformation:
+  CharaInfo:
     if: |
       github.event.schedule == '5 4 * * *' ||
       github.event.inputs.task == 'CharaInfo'
