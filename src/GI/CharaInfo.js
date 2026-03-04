@@ -254,9 +254,9 @@ function stripMarkers(text) {
         .replaceAll(/(<ref>.+?<\/ref>)/gs, `${ML_}$1${_MR}`)
         // 繁简转换
         .replaceAll(/-{(.+?)}-/gs, (_, content) => {
-            if(content.search('|') == -1) {
+            if(content.search('|') != -1) {
                 let [options, text] = content.split('|');
-                return `${ML_}-{${options}${_MR}${text}${ML_}}-${_MR}`;
+                return `${ML_}-{${options}|${_MR}${text}${ML_}}-${_MR}`;
             } else {
                 return `${ML_}-{${_MR}${content}${ML_}}-${_MR}`;
             }
@@ -316,7 +316,7 @@ function settleMarkers(oldCode, newCode) {
 }
 
 (async () => {
-    const FLAG_TESTING = false && !CONFIG.PRODUCTION;
+    const FLAG_TESTING = true && !CONFIG.PRODUCTION;
     const FLAG_PRODUCTION = CONFIG.PRODUCTION;
 
     /**
@@ -340,7 +340,7 @@ function settleMarkers(oldCode, newCode) {
             .filter((chara) => !['钟离', '纳西妲', '芙宁娜', '埃洛伊'].includes(chara[0]));
     } else {
         queue = [
-            '赛索斯'
+            '行秋'
             //'伊涅芙', '菈乌玛', '爱诺', '菲林斯', '奈芙尔', '雅珂达', '哥伦比娅', '叶洛亚'
             //'琴', '安柏', '丽莎', '凯亚', '芭芭拉', '迪卢克', '雷泽', '温迪', '可莉', '班尼特', '诺艾尔', '菲谢尔', '砂糖', '莫娜', '迪奥娜', '阿贝多', '罗莎莉亚', '优菈', '米卡'
             //'魈', '北斗', '凝光', '香菱', '行秋', '重云', '刻晴', '七七', '钟离', '辛焱', '甘雨', '胡桃', '烟绯', '云堇', '申鹤', '夜兰', '瑶瑶', '白术', '闲云', '嘉明', '蓝砚'
@@ -477,7 +477,7 @@ function settleMarkers(oldCode, newCode) {
         /**
          * 待机，防止频繁访问 API
          */
-        const interval = 60;
+        const interval = 30;
         if(!FLAG_PRODUCTION) {
             const bar = new ProgressBar(
                 `[${Colors.blue('WAITING')}] │:bar│  :currents/${interval}s`, 
