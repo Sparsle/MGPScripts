@@ -331,7 +331,7 @@ function settleMarkers(oldCode, newCode) {
 }
 
 (async () => {
-    const FLAG_TESTING = true && !CONFIG.PRODUCTION;
+    const FLAG_TESTING = false && !CONFIG.PRODUCTION;
     const FLAG_PRODUCTION = CONFIG.PRODUCTION;
 
     /**
