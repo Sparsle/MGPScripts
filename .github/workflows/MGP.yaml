@@ -6,8 +6,8 @@ on:
 
 jobs:
   Statistics:
-    if: |
-      github.event.schedule == '5 16 * * *'
+#   if: |
+#     github.event.schedule == '5 16 * * *'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
