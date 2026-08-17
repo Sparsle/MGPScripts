@@ -65,8 +65,10 @@ jobs:
         run: node src/GI/BirthdayArtwork.js
 
   CharaInfo:
-    if: |
-      github.event.schedule == '5 4 * * *' ||
+#   if: |
+#     github.event.schedule == '5 4 * * *' ||
+#     github.event.inputs.task == 'CharaInfo'
+    if:
       github.event.inputs.task == 'CharaInfo'
     runs-on: ubuntu-latest
     steps:
